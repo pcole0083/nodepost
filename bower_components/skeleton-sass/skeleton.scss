@@ -1,0 +1,194 @@
+/**
+ * SASS/SCSS/Compass Transcription of Skeleton Responsive Grid
+ * @author Dennis Thompson <http://www.atomicpages.net>
+ * @copyright Copyright (c) 2014 AtomicPages LLC
+ * @license MIT
+ * @version 2.5.0
+ */
+
+@import "skeleton/themes/loader"; // sass --update -C skeleton.scss:skeleton.css
+// sass --update -C /Applications/MAMP/htdocs/wicker/bower_components/skeleton-sass/skeleton.scss:/Applications/MAMP/htdocs/wicker/public/lib/skeleton/css/skeleton.css
+
+@mixin box-sizing($value){
+	@include prefix('box-sizing', $value);
+}
+
+* {
+	@include box-sizing(border-box);
+}
+
+body {
+	background-color: $base-color;
+}
+
+/* Add custom styles here */
+.container {
+	h1 {
+		a {
+			text-decoration: none;
+			color: $black;
+		}
+	}
+}
+
+.tag-group {
+	position: relative;
+	.tag-title {
+		display: inline-block;
+		font-size: 16px;
+		padding-right: 4px;
+
+		&:after {
+			content: ":";
+			position: relative;
+		}
+	}
+}
+
+.tags {
+	display: inline-block;
+	list-style: none;
+	padding-left: 0;
+	position: relative;
+
+	.tag {
+		display: inline;
+
+		&:before {
+		    content:',\0000a0'; /* Non-breaking space */
+		}
+
+		&:first-child:before {
+			content: '';
+		}
+	}
+}
+
+.link-list {
+	list-style: none;
+	padding-left: 24px;
+	position: relative;
+
+	.link-list-radio {
+		position: absolute;
+		top: 5px;
+		left: 0;
+	}
+	.link-list-item {
+		position: relative;
+		display: inline-block;
+	}
+}
+
+.section {
+	@include transitions(background-color 200ms ease-in 200ms, border-color 200ms ease-in 200ms);
+
+	padding: 5px;
+	border: 1px solid $transparent;
+	border-radius: 2px;
+	margin-bottom: 2rem;
+	background-color: $transparent;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&.editable{
+		&:not(.editing):hover{
+			border-color: $white;
+		}
+	}
+	&.locked {
+		border-color: $white;
+		background-color: $gray;
+	}
+}
+
+.input-{
+	&title,
+	&slug{
+		font-size: 14px;
+		line-height: 16px;
+	}
+}
+
+.adminbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 5px 10px;
+
+	background-color: $see-through;
+	color: $white;
+
+	.row {
+		margin: 0;
+	}
+
+	.bar-title {
+		display: inline-block;
+		color: $white;
+		margin-left: 10px;
+
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+	.admin-account-home,
+	.admin-account-link,
+	.admin-new-post {
+		display: inline-block;
+		color: $white;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: $link-decoration;
+		}
+	}
+	.admin-new-post{
+		font-size: 14px;
+		height: 20px;
+		line-height: 16px;
+		padding: 0 1.4em 0 1em;
+		background-color: $button-color;
+
+		@include transition(all 200ms ease-in-out);
+
+		&:hover {
+			background-color: $button-color;
+
+			a {
+				text-decoration: none;
+			}
+		}
+
+		a {
+			text-decoration: none;
+		}
+	}
+	.admin-account-link {
+		float: right;
+		text-align: right;
+	}
+}
+
+/* MEDIA QUERIES
+ * ------------------------------------------------ */
+/* Large displays */
+@media only screen and (min-width: $base-width) and (max-width: 1280px) { /* add code here */ }
+
+/* Smaller than standard #{strip-units($base-width)} (devices and browsers) */
+@media only screen and (max-width: $base-width - 1) { /* add code here */ }
+
+/* Tablet Portrait size to standard #{strip-units($base-width)} (devices and browsers) */
+@media only screen and (min-width: $tablet-width) and (max-width: $base-width - 1) { /* add code here */ }
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: $tablet-width - 1) { /* add code here */ }
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: $mobile-landscape-width + 60) and (max-width: $tablet-width - 1) { /* add code here */ }
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: ($mobile-landscape-width + 60) - 1) { /* add code here */ }

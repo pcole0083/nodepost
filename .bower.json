@@ -1,0 +1,26 @@
+{
+  "name": "NodePost",
+  "description": "A simple blog platform made with modern (2016) architechture.",
+  "main": "server.js",
+  "authors": [
+    "Pat Coleman <pcole0083@gmail.com> (https://github.com/pcole0083/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "esj",
+    "firebase"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "skeleton-sass": "~2.5.1"
+  }
+}
