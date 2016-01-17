@@ -51,16 +51,6 @@ export default class PostList extends React.Component {
 
         return <div>
         	<ul> {items} </ul>
-        	{ this.props.user ?
-        		<input type='text'
-        		className='u-full-width'
-        		value={this.state.newpostTitle}
-        		placeholder={placeholder}
-        		onChange={this.update}
-        		onKeyPress={this.createpost}
-        		 /> :
-        		null
-        	}
         </div>;
     };
     update = evt => {

@@ -136,8 +136,7 @@ body {
 		}
 	}
 	.admin-account-home,
-	.admin-account-link,
-	.admin-new-post {
+	.admin-account-link{
 		display: inline-block;
 		color: $white;
 		text-decoration: none;
@@ -146,7 +145,9 @@ body {
 			text-decoration: $link-decoration;
 		}
 	}
-	.admin-new-post{
+	.admin-new-post {
+		display: inline-block;
+		color: $white;
 		font-size: 14px;
 		height: 20px;
 		line-height: 16px;
