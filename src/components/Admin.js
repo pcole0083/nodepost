@@ -3,24 +3,40 @@ import React from 'react';
 import {Link} from 'react-router';
 //custom imports
 import * as API from '../api';
+import * as LoginStatus from './LoginStatus';
 import ListItemWrapper from './ListItemWrapper';
+import isAdmin from './isAdmin';
+
+const auth = API.auth;
 
 export default class Admin extends React.Component {
 
-    state = { user: {} }
+    state = { user: {}, groups: {} }
 
     componentDidMount() {
-        if(!!this.props.user && !!this.props.user.username){
-            API.users.child(this.props.user.username).on('value', this.updateContent);
+        let userData = API.ref.getAuth();
+        if(userData) {
+            auth.getUser(userData.uid, this.updateContent);
+        }
+        else {
+            this.setState({
+                user: {},
+                groups: {}
+            });
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!!this.props.user && !!this.props.user.username){
-            API.users.child(this.props.user.username).off('value', this.updateContent);
+        console.log(nextProps);
+        let userData = API.ref.getAuth();
+        if(userData) {
+            API.auth.getUser(userData.uid, this.updateContent);
         }
-        if(!!nextProps && !!nextProps.user && !!nextProps.user.username){
-            API.users.child(nextProps.user.username).on('value', this.updateContent);
+        else {
+            this.setState({
+                user: {},
+                groups: {}
+            });
         }
     }
 
@@ -32,13 +48,17 @@ export default class Admin extends React.Component {
         });
     }
 
+    isAdmin(userGroups) {
+        return isAdmin(userGroups);
+    }
+
     render() {
         let groups = '';
         let isAdmin = false;
 
         if (!!this.state.user && !!this.state.user.username){
             if(!!this.state.groups) {
-                isAdmin = this.isAdmin(this.state.groups);   
+                isAdmin = this.isAdmin(this.state.groups); 
             }
 
             if(isAdmin) {
@@ -47,7 +67,9 @@ export default class Admin extends React.Component {
                         <div className="four columns">
                             <Link to="/" className="admin-account-home">Home</Link>
                             <span className="bar-title">&nbsp;</span>
-                            <span className="bar-title">Admin Menu Bar</span>
+                            <Link to="/menus" className="bar-title">Menu Editor</Link>
+                            <span className="bar-title">&nbsp;</span>
+                            <span className="bar-title">Admin Bar</span>
                         </div>
                         <div className="four columns">
                             <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared-alt"></i>New</Link></button>
@@ -60,11 +82,5 @@ export default class Admin extends React.Component {
             }
         }
         return <div className="hidden"></div>;
-    }
-
-    isAdmin(userGroups) {
-        return Object.keys(userGroups).filter(function(id) {
-            return userGroups[id] === 'admins';
-        });
     }
 }

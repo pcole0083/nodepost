@@ -1,0 +1,10 @@
+{
+  "firebase": "post-pcoleman",
+  "public": "/",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**",
+    "**/bower_components/**"
+  ]
+}
