@@ -19,7 +19,11 @@ export default class Login extends React.Component {
     }
 
     componentWillUpdate(){
+        if(!!this.props.user && !!this.props.user.username){
+            return;
+        }
         let userData = API.ref.getAuth();
+
         if(userData){
             API.auth.getUser(userData.uid, this.updateUser);
         }
@@ -28,15 +32,19 @@ export default class Login extends React.Component {
     updateUser = (snapshot) => {
         let user = snapshot.exportVal();
 
-        this.setState({
-            user: user,
-            message: null
-        });
+        var statusChanged = user.username !== this.state.user.username;
 
-        this.props.dispatcher.dispatch.call(this.props.dispatcher, {
-            actionType: 'status-login',
-            isLoggedIn: true
-        });
+        if(statusChanged && user && user.username){
+            this.setState({
+                user: user,
+                message: null
+            });
+            
+            this.props.dispatcher.dispatch.call(this.props.dispatcher, {
+                actionType: 'status-login',
+                isLoggedIn: true
+            });
+        }
     }
 
     render() {

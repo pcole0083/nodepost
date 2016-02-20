@@ -11,31 +11,48 @@ const auth = API.auth;
 
 export default class Admin extends React.Component {
 
-    state = { user: {}, groups: {} }
+    state = {
+        user: {},
+        groups: {}
+    }
 
     componentDidMount() {
-        let userData = API.ref.getAuth();
-        if(userData) {
-            auth.getUser(userData.uid, this.updateContent);
-        }
-        else {
+        //auth.getUser(userData.uid, this.updateContent);
+        let groups = this.props.user && this.props.user.groups ? this.props.user.groups : {};
+
+        this.setState({
+            user: this.props.user || this.state.user,
+            groups: groups
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("Admin nextProps");
+        console.log(nextProps);
+        if(!!nextProps.user && (this.props.user.username !== nextProps.user.username) ){
+            let groups = nextProps.user.groups || {};
+
             this.setState({
-                user: {},
-                groups: {}
+                user: nextProps.user,
+                groups: groups
             });
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        let userData = API.ref.getAuth();
-        if(userData) {
-            API.auth.getUser(userData.uid, this.updateContent);
-        }
-        else {
+    componentWillUpdate(){
+        console.log("Admin will update:");
+        console.log(this.props);
+
+        let user = this.state.user;
+        let groups = this.state.groups;
+
+        if(!!this.props.user && !!this.props.user.groups && this.props.user.username !== this.state.user.username){
+            user = this.props.user;
+            groups = this.props.user.groups
+
             this.setState({
-                user: {},
-                groups: {}
+                user: user,
+                groups: groups
             });
         }
     }
@@ -51,6 +68,20 @@ export default class Admin extends React.Component {
     isAdmin(userGroups) {
         return isAdmin(userGroups);
     }
+
+    // registerLogout(){
+    //     var LoggoutToken = this.props.dispatcher.register({}, (payload) => {
+    //         console.log("payload:");
+    //         console.log(payload);
+    //         if (payload.actionType === 'status-loggout') {
+    //             this.setState({
+    //                 user: {},
+    //                 groups: {}
+    //             });
+    //             this.props.dispatcher.unregister(LoggoutToken);
+    //         }
+    //     });
+    // }
 
     render() {
         let groups = '';

@@ -14,7 +14,7 @@ import Admin    from './Admin';
 
 class App extends React.Component {
 	state = {
-		user: USER
+		user: {}
 	}
 
     componentDidMount() {
@@ -30,12 +30,9 @@ class App extends React.Component {
         }
     }
 
-    componentDidUpdate(){
-        console.log("HIT");
-    }
-
     updateContent = (snapshot) => {
         let json = snapshot.exportVal();
+
         this.setState({
             user: json
         });
@@ -85,11 +82,12 @@ class App extends React.Component {
     }
     registerLogout(){
         var LoggoutToken = LoginStatus.register({}, (payload) => {
-            if (payload.actionType === 'status-loggout') {
+            if (payload.actionType === 'status-logout') {
                 this.setState({
-                    user: null
+                    user: {}
                 });
                 LoginStatus.dispatcher.unregister(LoggoutToken);
+                this.registerLogin.call(this);
             }
         });
     }
