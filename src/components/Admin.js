@@ -27,8 +27,6 @@ export default class Admin extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("Admin nextProps");
-        console.log(nextProps);
         if(!!nextProps.user && (this.props.user.username !== nextProps.user.username) ){
             let groups = nextProps.user.groups || {};
 
@@ -40,9 +38,6 @@ export default class Admin extends React.Component {
     }
 
     componentWillUpdate(){
-        console.log("Admin will update:");
-        console.log(this.props);
-
         let user = this.state.user;
         let groups = this.state.groups;
 
@@ -68,20 +63,6 @@ export default class Admin extends React.Component {
     isAdmin(userGroups) {
         return isAdmin(userGroups);
     }
-
-    // registerLogout(){
-    //     var LoggoutToken = this.props.dispatcher.register({}, (payload) => {
-    //         console.log("payload:");
-    //         console.log(payload);
-    //         if (payload.actionType === 'status-loggout') {
-    //             this.setState({
-    //                 user: {},
-    //                 groups: {}
-    //             });
-    //             this.props.dispatcher.unregister(LoggoutToken);
-    //         }
-    //     });
-    // }
 
     render() {
         let groups = '';
