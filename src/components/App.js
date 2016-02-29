@@ -7,6 +7,7 @@ const {RouteHandler} = RR;
 import * as API from '../api';
 import * as LoginStatus from './LoginStatus';
 import Login    from './Login';
+import TopMenu  from './TopMenu';
 import Postlist from './PostList';
 import Account  from './Account';
 import Home     from './Home';
@@ -39,13 +40,15 @@ class App extends React.Component {
     }
 
     render() {
-        return <div>
-            <div className="row">
+        return <div className="page-wrapper">
+            <header className="row header">
                 <div className="three columns">
-                    <h1><Link to="/">NodePost</Link></h1>
+                    <h1 className="site-title"><Link to="/">NodePost</Link></h1>
                 </div>
-                <div className="nine columns"></div>
-            </div>
+                <div className="nine columns">
+                    <TopMenu user={this.state.user} />
+                </div>
+            </header>
         	<div className="row">
         		<div className="three columns">
                     <Login user={this.state.user} dispatcher={LoginStatus.dispatcher} />

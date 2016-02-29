@@ -29,6 +29,9 @@ $gray:          rgba(136,136,136, 1);
 $black:         rgba(0, 0, 0, 1);
 $see-through:   rgba(0, 0, 0, 0.8);
 
+$link-default: $gray;
+$link-hover:   $black;
+
 //mixins
 @mixin prefix($type, $property){
     -webkit-#{$type}:   $property;

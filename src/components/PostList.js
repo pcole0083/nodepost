@@ -53,7 +53,7 @@ export default class PostList extends React.Component {
         	<ul> {items} </ul>
         </div>;
     };
-    update = evt => {
+    /*update = evt => {
         let newPost = this.state.newPost
         newPost.title = !!evt && !!evt.target ? evt.target.value : '';
         this.setState({'newPost': newPost});
@@ -69,7 +69,7 @@ export default class PostList extends React.Component {
         this.context.router.transitionTo('post', { id: id.key() });
 
         this.update();
-    };
+    };*/
     updateHome = evt => {
         var homeId = evt.target.getAttribute('data-id');
         if(!!homeId){

@@ -13,6 +13,9 @@
 	@include prefix('box-sizing', $value);
 }
 
+$link-default: $gray;
+$link-hover:   $black;
+
 * {
 	@include box-sizing(border-box);
 }
@@ -21,12 +24,52 @@ body {
 	background-color: $base-color;
 }
 
+/**
+ * Helpers
+ */
+.capitalize {
+	text-transform: capitalize;
+}
+.caps {
+	text-transform: uppercase;
+}
+
 /* Add custom styles here */
 .container {
-	h1 {
+	.site-title {
+		margin-bottom: 0;
+
 		a {
 			text-decoration: none;
 			color: $black;
+			font-size: 4vw;
+		}
+	}
+	.header {
+		border-bottom: 1px solid $gray;
+	}
+}
+
+.top-nav {
+	.nav-list {
+		margin: 22px 0 0;
+	}
+	.menu-item {
+		list-style: none;
+		display: inline-block;
+
+		.menu-link {
+			display: block;
+			padding: 8px 12px;
+
+			color: $link-default;
+			text-decoration: none;
+
+			@include transition(color 200ms ease-in-out);
+
+			&:hover {
+				color: $link-hover;
+			}
 		}
 	}
 }
@@ -172,6 +215,10 @@ body {
 		float: right;
 		text-align: right;
 	}
+}
+
+.category-post-list {
+	list-style: none;
 }
 
 /* MEDIA QUERIES
