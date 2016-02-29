@@ -5,7 +5,7 @@ const {Link} = RR;
 const {RouteHandler} = RR;
 //custom imports
 import * as API from '../api';
-import * as LoginStatus from './LoginStatus';
+import * as AppDispatcher from '../dispatchers/AppDispatcher';
 import Login    from './Login';
 import TopMenu  from './TopMenu';
 import Postlist from './PostList';
@@ -22,7 +22,7 @@ class App extends React.Component {
         if(!!this.props && !!this.props.user && !!this.props.user.uid){
             API.users.child(this.props.user.uid).once('value', this.updateContent);
         }
-        this.registerLogin.call(this);
+        AppDispatcher.registerLogin.call(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,6 +41,7 @@ class App extends React.Component {
 
     render() {
         return <div className="page-wrapper">
+                <Admin user={this.state.user} dispatcher={AppDispatcher.dispatcher} /> 
             <header className="row header">
                 <div className="three columns">
                     <h1 className="site-title"><Link to="/">NodePost</Link></h1>
@@ -54,42 +55,41 @@ class App extends React.Component {
         			<RouteHandler user={this.state.user} />
         		</div>
         	</div>
-            <Admin user={this.state.user} dispatcher={LoginStatus.dispatcher} /> 
         </div>;
     }
 
     setUser = (user) => this.setState({ user: user })
 
-    registerLogin(){
-        var LoginToken = LoginStatus.register({}, (payload) => {
-            if (payload.actionType === 'status-login') {
-                let userData = API.ref.getAuth();
-                if(!!userData) {
-                    API.auth.getUser(userData.uid, (snapshot) => {
-                        let user = snapshot.exportVal();
+    // registerLogin(){
+    //     var LoginToken = AppDispatcher.register({}, (payload) => {
+    //         if (payload.actionType === 'status-login') {
+    //             let userData = API.ref.getAuth();
+    //             if(!!userData) {
+    //                 API.auth.getUser(userData.uid, (snapshot) => {
+    //                     let user = snapshot.exportVal();
 
-                        this.setState({
-                            user: user
-                        });
-                    });
+    //                     this.setState({
+    //                         user: user
+    //                     });
+    //                 });
 
-                    LoginStatus.dispatcher.unregister(LoginToken);
-                    this.registerLogout.call(this);
-                }
-            }
-        });
-    }
-    registerLogout(){
-        var LoggoutToken = LoginStatus.register({}, (payload) => {
-            if (payload.actionType === 'status-logout') {
-                this.setState({
-                    user: {}
-                });
-                LoginStatus.dispatcher.unregister(LoggoutToken);
-                this.registerLogin.call(this);
-            }
-        });
-    }
+    //                 AppDispatcher.dispatcher.unregister(LoginToken);
+    //                 this.registerLogout.call(this);
+    //             }
+    //         }
+    //     });
+    // }
+    // registerLogout(){
+    //     var LoggoutToken = AppDispatcher.register({}, (payload) => {
+    //         if (payload.actionType === 'status-logout') {
+    //             this.setState({
+    //                 user: {}
+    //             });
+    //             AppDispatcher.dispatcher.unregister(LoggoutToken);
+    //             this.registerLogin.call(this);
+    //         }
+    //     });
+    // }
 
 }
 

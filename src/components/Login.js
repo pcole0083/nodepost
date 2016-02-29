@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import * as API from '../api';
 import * as LoginStatus from './LoginStatus';
+import * as AppDispatcher from '../dispatchers/AppDispatcher';
 
 export default class Login extends React.Component {
     state = {
@@ -40,7 +41,7 @@ export default class Login extends React.Component {
                 message: null
             });
             
-            this.props.dispatcher.dispatch.call(this.props.dispatcher, {
+            AppDispatcher.dispatcher.dispatch({
                 actionType: 'status-login',
                 isLoggedIn: true
             });
@@ -118,7 +119,7 @@ export default class Login extends React.Component {
                         message: null
                     });
 
-                    scope.props.dispatcher.dispatch.call(scope.props.dispatcher, {
+                    AppDispatcher.dispatcher.dispatch({
                         actionType: 'status-login',
                         isLoggedIn: true
                     });
@@ -135,7 +136,7 @@ export default class Login extends React.Component {
             message: "You have been logged out."
         });
 
-        this.props.dispatcher.dispatch.call(this.props.dispatcher, {
+        AppDispatcher.dispatcher.dispatch({
             actionType: 'status-logout',
             isLoggedIn: false
         });
