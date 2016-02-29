@@ -4,6 +4,8 @@ A simple blog platform made with modern (2016) architechture.
 Built with React, Firebase, Express, Babel, and Browserify.
 Uses NPM as the build tool.
 
+Example app: https://post-pcoleman.firebaseapp.com/
+
 **Dependencies**
 - "body-parser": "^1.13.3"
 - "cookie-parser": "^1.3.5"
