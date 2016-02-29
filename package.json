@@ -1,6 +1,6 @@
 {
   "name": "nodepost",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple blog platform made with modern (2016) architechture.",
   "main": "server.js",
   "scripts": {
