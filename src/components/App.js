@@ -50,11 +50,7 @@ class App extends React.Component {
                 </div>
             </header>
         	<div className="row">
-        		<div className="three columns">
-                    <Login user={this.state.user} dispatcher={LoginStatus.dispatcher} />
-        			<Postlist user={this.state.user} />
-        		</div>
-        		<div className="nine columns">
+        		<div className="twelve columns">
         			<RouteHandler user={this.state.user} />
         		</div>
         	</div>

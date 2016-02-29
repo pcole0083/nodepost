@@ -31,8 +31,13 @@ export default class TopMenu extends React.Component {
         ):
     	[<li key='loading' className='menu-item'><em>Loading...</em></li>];
 
+        let loginLink = !!this.props.user && !!this.props.user.username ? <Link to='login' className="menu-link"><i className="icon-user"></i></Link> : <Link to='login' className="menu-link"><i className="icon-user"></i></Link>; 
+
         return <nav className="top-nav">
-        	<ul className="nav-list"> {items} </ul>
+        	<ul className="nav-list">
+                {items}
+                <li className="menu-item">{loginLink}</li>
+            </ul>
         </nav>;
     };
 }
