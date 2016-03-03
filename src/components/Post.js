@@ -7,6 +7,7 @@ import {markdown} from 'markdown';
 import EditableElement from './EditableElement';
 import Tags from './Tags';
 import Categories from './Categories';
+import isAdmin from './isAdmin';
 
 
 class Post extends React.Component {
@@ -50,6 +51,8 @@ class Post extends React.Component {
         let catsTitle = '';
         let cats = '';
 
+        let canEdit = !!this.props.user && !!this.props.user.groups ? isAdmin(this.props.user.groups) : null;
+
         if(this.state.post.title){ //Data is loaded
             title = <h1><EditableElement 
                             content={this.state.post.title}
@@ -71,12 +74,12 @@ class Post extends React.Component {
 
             if(this.state.tags){
                 tagsTitle = <h4 className="tag-title">Tags</h4>;
-                tags = <Tags data={this.state.tags} />;
+                tags = <Tags data={this.state.tags} editor={canEdit} />;
             }
 
             if(this.state.categories){
                 catsTitle = <h4 className="cats-title">Categories</h4>;
-                cats = <Categories data={this.state.categories} />;
+                cats = <Categories data={this.state.categories} editor={canEdit} />;
             }
         }
 

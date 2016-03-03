@@ -13,8 +13,25 @@
 	@include prefix('box-sizing', $value);
 }
 
+@mixin prefix($prop, $val){
+	-webkit-#{$prop}: $val;
+	-moz-#{$prop}: $val;
+	-ms-#{$prop}: $val;
+	-o-#{$prop}: $val;
+	#{$prop}: $val;
+}
+
+@mixin transition($args...) {
+	@include prefix(transition, $args);
+}
+
+$white: rgba(255,255,255,1);
+
 $link-default: $gray;
 $link-hover:   $black;
+
+$selected-default: #597e85;
+$remove: #bd2626;
 
 * {
 	@include box-sizing(border-box);
@@ -32,6 +49,16 @@ body {
 }
 .caps {
 	text-transform: uppercase;
+}
+.button {
+	&.selected {
+		background-color: $selected-default;
+		color: $white;
+
+		&:hover {
+			background-color: darken($selected-default, 10%);
+		}
+	}
 }
 
 /* Add custom styles here */
@@ -96,6 +123,7 @@ body {
 
 	.tag {
 		display: inline;
+		position: relative;
 
 		&:before {
 		    content:',\0000a0'; /* Non-breaking space */
@@ -104,6 +132,26 @@ body {
 		&:first-child:before {
 			content: '';
 		}
+	}
+	.remove {
+		padding: 4px;
+		background-color: $remove;
+		display: block;
+		position: absolute;
+		top: -15px;
+	    right: -6px;
+	    width: 16px;
+	    height: 16px;
+	    line-height: 0.4;
+	    border-radius: 10px;
+	    color: $white;
+	    cursor: pointer;
+
+	    @include transition(transform 200ms ease-in-out);
+
+	    &:hover {
+	    	@include prefix(transform, rotateZ(360deg));
+	    }
 	}
 }
 
