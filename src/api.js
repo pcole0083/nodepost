@@ -1,13 +1,14 @@
 import Firebase from 'firebase';
 
-export const posts = new Firebase('https://post-pcoleman.firebaseio.com/posts');
-export const postTypes = new Firebase('https://post-pcoleman.firebaseio.com/postTypes');
-export const users = new Firebase('https://post-pcoleman.firebaseio.com/users');
-export const groups = new Firebase('https://post-pcoleman.firebaseio.com/groups');
-export const categories = new Firebase('https://post-pcoleman.firebaseio.com/categories');
-export const tags = new Firebase('https://post-pcoleman.firebaseio.com/tags');
+export const baseUrl = 'https://post-pcoleman.firebaseio.com/';
+export const posts = new Firebase(baseUrl+'posts');
+export const postTypes = new Firebase(baseUrl+'postTypes');
+export const users = new Firebase(baseUrl+'users');
+export const groups = new Firebase(baseUrl+'groups');
+export const categories = new Firebase(baseUrl+'categories');
+export const tags = new Firebase(baseUrl+'tags');
 
-export const ref = new Firebase('https://post-pcoleman.firebaseio.com');
+export const ref = new Firebase(baseUrl);
 
 export const auth = {
 

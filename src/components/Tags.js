@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ListItemWrapper from './ListItemWrapper';
+import Firebase from 'firebase';
 import * as API from '../api';
 
 class Tags extends React.Component {
@@ -29,12 +30,41 @@ class Tags extends React.Component {
     		//add check to see if tag already exists
     		API.tags.push(input.value);
     	}
-    };
+    }
 
     deleteTag = evt => {
     	let target = evt.target;
     	let tagId = target.getAttribute('data-id');
     	console.log(tagId);
+    }
+
+    toggleTag = evt => {
+    	let target = evt.target;
+    	let tagId  = target.getAttribute('data-id');
+    	let text   = target.innerHTML;
+    	let tags   = this.props.data;
+    	let postId = this.props.postid;
+    	
+    	let postTagsRef = new Firebase(API.baseUrl+'posts/'+postId+'/tags');
+
+    	postTagsRef.once("value", snapshot => {
+    		let existingTags = snapshot.exportVal();
+    		let tagIds = Object.keys(existingTags || {});
+    		let tagsArray = tagIds.map(function(key) { return existingTags[key]; } );
+
+    		if( !!~tagsArray.indexOf(text) ){
+    			tagIds.map(function(key) {
+    				let tag = existingTags[key];
+    				if(tag === text){
+    					postTagsRef.child(key).remove();
+    					return tag;
+    				}
+    			});
+    		}
+    		else {
+    			postTagsRef.push(text);
+    		}
+    	});
     }
 
 	render() {
@@ -50,13 +80,13 @@ class Tags extends React.Component {
         	list = <ul className="tags" >
                 {Object.keys(data).map(function(id) {
                 	return <li className="tag" key={id} >
-                		<button className="toggle-btn button selected">{data[id]}</button>
+                		<button className="toggle-btn button selected" data-id={id} onClick={self.toggleTag} >{data[id]}</button>
                 		<span className="remove" key={id} data-id={id} onClick={self.deleteTag} >x</span>
         			</li>;
                 })}
                 {Object.keys(tags).map(function(id) {
                 	return <li className="tag" key={id} >
-                		<button className="toggle-btn button">{tags[id]}</button>
+                		<button className="toggle-btn button" data-id={id} onClick={self.toggleTag} >{tags[id]}</button>
                 		<span className="remove" key={id} data-id={id} onClick={self.deleteTag} >x</span>
         			</li>;
                 })}

@@ -24,8 +24,10 @@ class Post extends React.Component {
 
     updateContent = (snapshot) => {
         let json = snapshot.exportVal();
+
         this.setState({
             post:       json,
+            postid:     snapshot.key(),
             type:       json.type,
             title:      json.title, 
             content:    json.content || '',
@@ -74,7 +76,7 @@ class Post extends React.Component {
 
             if(this.state.tags){
                 tagsTitle = <h4 className="tag-title">Tags</h4>;
-                tags = <Tags data={this.state.tags} editor={canEdit} />;
+                tags = <Tags postid={this.state.postid} data={this.state.tags} editor={canEdit} />;
             }
 
             if(this.state.categories){

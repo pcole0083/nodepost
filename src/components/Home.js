@@ -29,6 +29,7 @@ class Home extends Post {
 
             this.setState({
                 post:       json,
+                postid:     keys[0],
                 type:       json.type,
                 title:      json.title, 
                 content:    json.content || '',
