@@ -9,7 +9,12 @@ export const categories = new Firebase(baseUrl+'categories');
 export const tags = new Firebase(baseUrl+'tags');
 
 export const ref = new Firebase(baseUrl);
-
+export const _get = function(type) {
+	if(!!type){
+		return new Firebase(baseUrl+type);
+	}
+	return null;
+}
 export const auth = {
 
 	//return {

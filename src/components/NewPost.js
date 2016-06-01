@@ -41,13 +41,13 @@ export default class NewPost extends React.Component {
                 <p><input type='text' className='u-full-width input-type' name="type" defaultValue={this.state.newPost.type} placeholder='Custom Post Type' onChange={this.update} /></p>
                 <p><textarea className='u-full-width input-content' name="content" placeholder={this.state.newPost.content} onChange={this.update}></textarea></p>
                 <h4 className="tag-title">Authors</h4>
-                <Tags data={this.state.newPost.authors} />
+                <Tags datatype="authors" data={this.state.newPost.authors} />
                 <p><input type='text' className='u-full-width input-authors' name="authors" defaultValue={this.state.user.username} placeholder='Author Names' onKeyPress={this.updateArrayData} /></p>
                 <h4 className="tag-title">Tags</h4>
-                <Tags data={this.state.newPost.tags} />
+                <Tags datatype="tags" data={this.state.newPost.tags} />
                 <p><input type='text' className='u-full-width input-tags' name="tags" placeholder='Add Tags' onKeyPress={this.updateArrayData} /></p>
                 <h4 className="cats-title">Categories</h4>
-                <Categories data={this.state.newPost.categories} />
+                <Tags dtattype="categories" data={this.state.newPost.categories} />
                 <p><input type='text' className='u-full-width input-categories' name="categories" placeholder='Add Categories' onKeyPress={this.updateArrayData} /></p>
                 <p><button onClick={this.createpost}>Create</button></p>
             </article>;
@@ -55,7 +55,8 @@ export default class NewPost extends React.Component {
         else {
             return <article className="post-article">Loading...</article>
         }
-    };
+    }
+
     update = evt => {
         let newPost = this.state.newPost
         let name = evt.target.name;
@@ -67,7 +68,7 @@ export default class NewPost extends React.Component {
         }
 
         this.setState({'newPost': newPost});
-    };
+    }
 
     generateSlug(title){
         return title.replace(/\s+/g, '-').toLowerCase();
@@ -83,7 +84,8 @@ export default class NewPost extends React.Component {
         this.context.router.transitionTo('post', { id: id.key() });
 
         this.update(evt);
-    };
+    }
+
     updateArrayData = evt => {
         if( evt.charCode !== 13 ){
             return;
@@ -98,6 +100,7 @@ export default class NewPost extends React.Component {
             evt.target.value = '';
         }
     }
+
     updateHome = evt => {
         var homeId = evt.target.getAttribute('data-id');
         if(!!homeId){
@@ -107,7 +110,7 @@ export default class NewPost extends React.Component {
                 })
             );
         }
-    };
+    }
 }
 
 NewPost.contextTypes = { 

@@ -26,6 +26,13 @@ class Category extends React.Component {
         }));
     }
 
+    componentWillUnmount(){
+        API.posts.off('value');
+        if(!!this.cleanup){
+            this.cleanup()
+        }
+    }
+
     filterByCategory(posts){
         var categoryPosts = {};
 
@@ -48,7 +55,8 @@ class Category extends React.Component {
         let items = !!this.state.loaded ? Object.keys(categoryPosts).map(id => <li key={id} className='category-item'>
             <h3><Link to='post' params={ {id: id} } className='link-list-item' >{this.state.posts[id].title}</Link></h3>
             <div className="post-content short-description">{this.state.posts[id].content.replace('[[', '').replace(']]', '')}</div>
-            <Tags data={ this.state.posts[id].tag || {} } />
+            <span className="tag-title">Tags:</span>
+            <Tags datatype="tags" data={ this.state.posts[id].tags || {} } />
         </li>):
         [<li key='loading' className='link-list-item'><em> Loading... </em></li>];
 

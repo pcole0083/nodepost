@@ -6,7 +6,7 @@ const {RouteHandler} = RR;
 //custom imports
 import * as API from '../api';
 import * as AppDispatcher from '../dispatchers/AppDispatcher';
-import Login    from './Login';
+import LoginStatus    from '../helpers/LoginStatus';
 import TopMenu  from './TopMenu';
 import Postlist from './PostList';
 import Account  from './Account';
@@ -19,10 +19,13 @@ class App extends React.Component {
 	}
 
     componentDidMount() {
+        AppDispatcher.registerLogin.call(this);
         if(!!this.props && !!this.props.user && !!this.props.user.uid){
             API.users.child(this.props.user.uid).once('value', this.updateContent);
         }
-        AppDispatcher.registerLogin.call(this);
+        else {
+            LoginStatus.userCheck.call(this);
+        }
     }
 
     componentWillReceiveProps(nextProps) {

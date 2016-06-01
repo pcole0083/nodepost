@@ -58,7 +58,7 @@ class EditableElement extends React.Component {
 		var classes = ['u-full-width', 'input-'+name]; //"twelve columns"
 
 		//Text or Input depending on editing state
-		if( !!this.state.editing || !!this.props.editable ){
+		if( !!this.props.user && !!this.props.user.username && !!this.state.editing || !!this.props.editable ){
 			if(inputType === 'textarea'){
 				content = <textarea ref="editing" name={name} placeholder={placeholder} className={ classes.join(' ') } defaultValue={ this.state.content } onChange={updateFn} onBlur={this.save} />
 			}

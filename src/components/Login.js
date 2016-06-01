@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import * as API from '../api';
-import * as LoginStatus from './LoginStatus';
 import * as AppDispatcher from '../dispatchers/AppDispatcher';
+import LoginStatus from '../helpers/LoginStatus';
 
 export default class Login extends React.Component {
     state = {
@@ -13,21 +13,40 @@ export default class Login extends React.Component {
     }
 
     componentDidMount() {
-        let userData = API.ref.getAuth();
-        if(userData){
-            API.auth.getUser(userData.uid, this.updateUser);
+        if(!!this.props.user && !!this.props.user.username) {
+            return this.setState({
+                user: this.props.user,
+                message: null
+            });
         }
+        LoginStatus.userCheck();
     }
 
     componentWillUpdate(){
         if(!!this.props.user && !!this.props.user.username){
             return;
         }
-        let userData = API.ref.getAuth();
+        let userData = this.getAuth();
 
         if(userData){
             API.auth.getUser(userData.uid, this.updateUser);
         }
+    }
+
+    userCheck = () => {
+        let userData = this.getAuth();
+        if(userData){
+            return this.getUser(userData);
+        }
+        return userData;
+    }
+
+    getAuth = () => {
+        return API.ref.getAuth();
+    }
+
+    getUser = (userData) => {
+        return API.auth.getUser(userData.uid, this.updateUser);
     }
 
     updateUser = (snapshot) => {

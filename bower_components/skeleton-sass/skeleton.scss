@@ -25,6 +25,11 @@
 	@include prefix(transition, $args);
 }
 
+@include keyframes(fade-in) {
+  0%   { opacity: 0; }
+  100% { opacity: 1.0; }
+}
+
 $white: rgba(255,255,255,1);
 
 $link-default: $gray;
@@ -77,6 +82,14 @@ body {
 	}
 }
 
+.post-article,
+.category-page,
+.category-post-list {
+	@include prefix(animation-fill-mode, forwards);
+	@include animation('fade-in 2s 1');
+	//@include transition(opacity, 400ms, ease-in-out, 300ms);
+}
+
 .top-nav {
 	.nav-list {
 		margin: 22px 0 0;
@@ -120,6 +133,7 @@ body {
 	list-style: none;
 	padding-left: 0;
 	position: relative;
+	margin-left: 6px;
 
 	.tag {
 		display: inline;
@@ -153,6 +167,11 @@ body {
 	    	@include prefix(transform, rotateZ(360deg));
 	    }
 	}
+}
+.add-new {
+	display: inline-block;
+
+	margin-left: 8px;
 }
 
 .link-list {

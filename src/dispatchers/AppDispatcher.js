@@ -5,6 +5,7 @@ export const dispatcher = new Dispatcher();
 import * as API from '../api';
 
 export function registerLogin(){
+    var scope = this;
     var LoginToken = dispatcher.register(payload => {
         if (payload.actionType === 'status-login') {
             let userData = API.ref.getAuth();
@@ -12,26 +13,27 @@ export function registerLogin(){
                 API.auth.getUser(userData.uid, (snapshot) => {
                     let user = snapshot.exportVal();
 
-                    this.setState({
+                    scope.setState({
                         user: user
                     });
                 });
 
                 dispatcher.unregister(LoginToken);
-                registerLogout.call(this);
+                registerLogout.call(scope);
             }
         }
     });
 }
 
 export function registerLogout(){
+    var scope = this;
     var LoggoutToken = dispatcher.register(payload => {
         if (payload.actionType === 'status-logout') {
-            this.setState({
+            scope.setState({
                 user: {}
             });
             dispatcher.unregister(LoggoutToken);
-            registerLogin.call(this);
+            registerLogin.call(scope);
         }
     });
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import {Link} from 'react-router';
 //custom imports
 import * as API from '../api';
-import * as LoginStatus from './LoginStatus';
+import * as LoginStatus from '../helpers/LoginStatus';
 import ListItemWrapper from './ListItemWrapper';
 import isAdmin from './isAdmin';
 

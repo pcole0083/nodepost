@@ -1,34 +1,33 @@
 //library imports
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router';
 //custom imports
 import * as API from '../api';
 import ListItemWrapper from './ListItemWrapper';
+import Login from './Login';
 
 export default class Account extends React.Component {
 
-    state = { user: {} }
+    state = {
+        user: {},
+        groups: {}
+    }
 
     componentDidMount() {
         if(!!this.props.user && !!this.props.user.username){
-            API.users.child(this.props.user.username).on('value', this.updateContent);
+            this.updateUser(this.props.user);
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!!this.props.user && !!this.props.user.username){
-            API.users.child(this.props.user.username).off('value', this.updateContent);
-        }
-        if(!!nextProps && !!nextProps.user && !!nextProps.user.username){
-            API.users.child(nextProps.user.username).on('value', this.updateContent);
-        }
+        this.updateUser(nextProps);
     }
 
-    updateContent = (snapshot) => {
-        let json = snapshot.exportVal();
+    updateUser = (json) => {
         this.setState({
-            user: json,
-            groups: json.groups || {}
+            user: json || {},
+            groups: !!json && json.groups || {}
         });
     }
 
@@ -50,7 +49,8 @@ export default class Account extends React.Component {
 
             return <div className='row'>
                 <article>
-                    <h1>Account</h1>
+                    <h2>Account</h2>
+                    <p>Hello {this.state.user.username}!</p>
                     <h2>User Groups</h2>
                     {groups}
                     <p><input className='add-group-input' placeholder='Add Group' ref='group' type='text' onKeyPress={this.onEnter} /></p>
@@ -58,7 +58,7 @@ export default class Account extends React.Component {
                 </article>
             </div>;
         }
-        return <div className='row'></div>;
+        return <div className='row'><Link to="/login">Login</Link></div>;
     }
 
     onEnter = evt => {

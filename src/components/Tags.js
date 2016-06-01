@@ -18,24 +18,40 @@ class Tags extends React.Component {
     }
 
     componentDidMount() {
-    	API.tags.on('value', ss => this.setState({
-    		tags: ss.exportVal() || {},
-    		loaded: true
-    	}));
+    	this.updateValue();
+    }
+
+    componentWillUnmount(){
+        API[this.props.datatype].off('value');
+        if(!!this.cleanup){
+            this.cleanup()
+        }
+    }
+
+    updateValue = () => {
+        if( !!API[this.props.datatype] ){
+            API[this.props.datatype].on('value', ss => this.setState({
+                tags: ss.exportVal() || {},
+                loaded: true
+            }));
+        }
     }
 
     addNew = evt => {
     	let input = ReactDOM.findDOMNode(this.refs.newInput);
     	if(!!input && !!input.value){
     		//add check to see if tag already exists
-    		API.tags.push(input.value);
+    		API[this.props.datatype].push(input.value);
     	}
     }
 
     deleteTag = evt => {
     	let target = evt.target;
-    	let tagId = target.getAttribute('data-id');
-    	console.log(tagId);
+    	let dataId = target.getAttribute('data-id');
+    	//console.log(dataId);
+        if(window.confirm && window.confirm("Delete "+this.props.datatype+" "+dataId+" permenantly from all posts?") ){
+            API[this.props.datatype].child(dataId).remove();
+        }
     }
 
     toggleTag = evt => {
@@ -45,7 +61,7 @@ class Tags extends React.Component {
     	let tags   = this.props.data;
     	let postId = this.props.postid;
     	
-    	let postTagsRef = new Firebase(API.baseUrl+'posts/'+postId+'/tags');
+    	let postTagsRef = new Firebase(API.baseUrl+'posts/'+postId+'/'+this.props.datatype);
 
     	postTagsRef.once("value", snapshot => {
     		let existingTags = snapshot.exportVal();
@@ -75,27 +91,31 @@ class Tags extends React.Component {
 
         let list = '';
         let addNew = '';
+        let dupes = [];
 
         if(!!editor) {
         	list = <ul className="tags" >
                 {Object.keys(data).map(function(id) {
+                    dupes.push(data[id]);
                 	return <li className="tag" key={id} >
                 		<button className="toggle-btn button selected" data-id={id} onClick={self.toggleTag} >{data[id]}</button>
                 		<span className="remove" key={id} data-id={id} onClick={self.deleteTag} >x</span>
         			</li>;
                 })}
                 {Object.keys(tags).map(function(id) {
-                	return <li className="tag" key={id} >
-                		<button className="toggle-btn button" data-id={id} onClick={self.toggleTag} >{tags[id]}</button>
-                		<span className="remove" key={id} data-id={id} onClick={self.deleteTag} >x</span>
-        			</li>;
+                    if( !~dupes.indexOf(tags[id]) ) {
+                    	return <li className="tag" key={id} >
+                    		<button className="toggle-btn button" data-id={id} onClick={self.toggleTag} >{tags[id]}</button>
+                    		<span className="remove" key={id} data-id={id} onClick={self.deleteTag} >x</span>
+            			</li>;
+                    }
                 })}
             </ul>;
 
-        	addNew = <div className="add-new">
+        	addNew = <span className="add-new">
         		<input type="text" className="new-tag-input" ref="newInput" />
         		<button className="button add-new-button" onClick={this.addNew}>Add</button>
-        	</div>;
+        	</span>;
         }
         else {
         	list = <ul className="tags" >
@@ -105,10 +125,10 @@ class Tags extends React.Component {
             </ul>;
         }
 
-        return <div>
+        return <span>
         	{list}
         	{addNew}
-        </div>;
+        </span>;
 	}
 }
 

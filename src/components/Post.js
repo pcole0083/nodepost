@@ -22,6 +22,15 @@ class Post extends React.Component {
         API.posts.child(nextProps.params.id).on('value', this.updateContent);
     }
 
+    componentWillUnmount(){
+        if(!!this.props && !!this.props.params && !!this.props.params.id){
+            API.posts.child(this.props.params.id).off('value');
+        }
+        else if(!!this.state.post && this.state.post.id){
+            API.posts.child(this.state.post.id).off('value');
+        }
+    }
+
     updateContent = (snapshot) => {
         let json = snapshot.exportVal();
 
@@ -76,12 +85,12 @@ class Post extends React.Component {
 
             if(this.state.tags){
                 tagsTitle = <h4 className="tag-title">Tags</h4>;
-                tags = <Tags postid={this.state.postid} data={this.state.tags} editor={canEdit} />;
+                tags = <Tags datatype="tags" data={this.state.tags} postid={this.state.postid} editor={canEdit} />;
             }
 
-            if(this.state.categories){
+            if(canEdit && this.state.categories){
                 catsTitle = <h4 className="cats-title">Categories</h4>;
-                cats = <Categories data={this.state.categories} editor={canEdit} />;
+                cats = <Tags datatype="categories" data={this.state.categories} postid={this.state.postid} editor={canEdit} />;
             }
         }
 
