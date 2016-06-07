@@ -82,6 +82,7 @@ body {
 	}
 }
 
+.fade-in,
 .post-article,
 .category-page,
 .category-post-list {
@@ -183,6 +184,11 @@ body {
 		position: absolute;
 		top: 5px;
 		left: 0;
+
+		&.icon-ok-circled2 {
+			line-height: 1;
+			left: -2px;
+		}
 	}
 	.link-list-item {
 		position: relative;
@@ -223,26 +229,58 @@ body {
 }
 
 .adminbar {
-	position: relative;
-	// top: 0;
-	// left: 0;
-	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 180px;
+	height:	100%;
 	padding: 5px 10px;
 
 	background-color: $see-through;
 	color: $white;
+
+	@include prefix(transform, translateX(-140px));
+	@include transition(transform 300ms ease-in-out);
+
+	&.open-slide {
+		@include prefix(transform, translateX(0));
+
+		.toggle-switch {
+			@include prefix(transform, rotateZ(360deg));
+		}
+	}
+
+	.toggle-switch {
+		position: absolute;
+	    height: 24px;
+	    width: 24px;
+	    padding-left: 3px;
+	    text-align: center;
+
+		@include transition(transform 360ms ease-in-out);
+
+		&:hover {
+			cursor: pointer;
+			@include prefix(transform, rotateZ(-360deg));
+		}
+	}
 
 	.row {
 		margin: 0;
 	}
 
 	.bar-title {
-		display: inline-block;
+		display: block;
 		color: $white;
-		margin-left: 10px;
+		text-decoration: none;
+		@include transition(color 300ms ease-in-out);
 
 		&:first-child {
 			margin-left: 0;
+		}
+
+		&:hover {
+			color: $selected-default;
 		}
 	}
 	.admin-account-home,
@@ -278,10 +316,10 @@ body {
 			text-decoration: none;
 		}
 	}
-	.admin-account-link {
-		float: right;
-		text-align: right;
-	}
+	// .admin-account-link {
+	// 	float: right;
+	// 	text-align: right;
+	// }
 }
 
 .category-post-list {

@@ -64,30 +64,40 @@ export default class Admin extends React.Component {
         return isAdmin(userGroups);
     }
 
+    toggleOpen = evt => {
+        var adminBar = React.findDOMNode(this.refs.adminbar);
+        adminBar.classList.toggle('open-slide');
+    }
+
     render() {
         let groups = '';
         let isAdmin = false;
 
         if (!!this.state.user && !!this.state.user.username){
             if(!!this.state.groups) {
-                isAdmin = this.isAdmin(this.state.groups); 
+                isAdmin = this.isAdmin(this.state.groups);
             }
 
             if(isAdmin) {
-                return <div className="adminbar">
+                return <div className="adminbar" ref="adminbar">
                     <div className='row'>
-                        <div className="four columns">
-                            <Link to="/" className="admin-account-home">Home</Link>
-                            <span className="bar-title">&nbsp;</span>
-                            <Link to="/menus" className="bar-title">Menu Editor</Link>
-                            <span className="bar-title">&nbsp;</span>
-                            <span className="bar-title">Admin Bar</span>
+                        <div className="ten columns">
+                            <Link to="/account" className="admin-account-link">Welcome {this.state.user.username}</Link>
                         </div>
-                        <div className="four columns">
+                        <div className="two columns">
+                            <i className="icon-cog toggle-switch" onClick={this.toggleOpen} ></i>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className="tweleve columns">
                             <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared-alt"></i>New</Link></button>
                         </div>
-                        <div className="four columns">
-                            <Link to="/account" className="admin-account-link">Welcome {this.state.user.username}</Link>
+                        <div className="tweleve columns">
+                            <Link to="/" className="admin-account-home">Home</Link>
+                            <Link to="/menus" className="bar-title">Menu Editor</Link>
+                            <Link to="/posts" className="bar-title"><i className="icon-pencil-squared"></i>Posts</Link>
+                            <span className="bar-title"><i className="icon-user"></i>Users</span>
+                            <span className="bar-title"><i className="icon-database"></i>Settings</span>
                         </div>
                     </div>
                 </div>;

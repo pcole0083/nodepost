@@ -8,20 +8,7 @@ import {Link} from 'react-router';
 export default class PostList extends React.Component {
     state = {
     	loaded: false,
-    	posts: {},
-    	newpostTitle: '',
-        newPost: {
-            type:       '',
-            title:      '', 
-            content:    'Your text here',
-            categories: '',
-            tags:       '',
-            authors:    '',
-            status:     'draft',
-            visibility: 'visibile',
-            image:      '',
-            slug:       ''
-        }
+    	posts: {}
     }
 
     constructor(props, context) {
@@ -43,33 +30,17 @@ export default class PostList extends React.Component {
     	</li>):
     	[<li key='loading'><em> Loading... </em></li>];
 
-        let id = Object.keys(this.state.posts).filter(id => {
-            return window.location.href.indexOf(id) > -1;
-        });
-
-        let placeholder = 'New Post Title';
-
-        return <div>
-        	<ul> {items} </ul>
+        return <div className="fade-in">
+        	<ul>
+                <li className='link-list'>
+                    <i className="link-list-radio icon-ok-circled2" title="Home Post"></i>
+                    <span className='link-list-item'>Post Title</span>
+                </li>
+                {items}
+            </ul>
         </div>;
-    };
-    /*update = evt => {
-        let newPost = this.state.newPost
-        newPost.title = !!evt && !!evt.target ? evt.target.value : '';
-        this.setState({'newPost': newPost});
-    };
-    createpost = evt => {
-    	if( evt.charCode !== 13 ){
-    		return;
-    	}
-    	var id = API.posts.push(this.state.newPost);
-        API.posts.child(id).set({
-            'slug': id
-        });
-        this.context.router.transitionTo('post', { id: id.key() });
+    }
 
-        this.update();
-    };*/
     updateHome = evt => {
         var homeId = evt.target.getAttribute('data-id');
         if(!!homeId){
@@ -79,7 +50,7 @@ export default class PostList extends React.Component {
                 })
             );
         }
-    };
+    }
 }
 
 PostList.contextTypes = { 

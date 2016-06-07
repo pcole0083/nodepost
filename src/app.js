@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Post from './components/Post';
 import NewPost from './components/NewPost';
 import Category from './components/Category';
+import PostList from './components/PostList';
 import Home from './components/Home';
 import Account from './components/Account';
 import Menus from './components/Menus';
@@ -18,6 +19,7 @@ var routes = <Route handler={App}>
 	<Route name='post' path='/post/:id' handler={Post} />
 	<Route name='page' path='/page/:id' handler={Post} />
 	<Route name='category' path='/category/:name' handler={Category} />
+	<Route name='postlist' path='/posts' handler={PostList} />
 	<Route name='new' path='/new' handler={NewPost} />
 	<Route name='account' path='/account' handler={Account} />
 	<Route name='menus' path='/menus' handler={Menus} />

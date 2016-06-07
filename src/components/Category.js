@@ -6,7 +6,7 @@ import * as API from '../api';
 //import only the Link property (Destructoring)
 import {Link} from 'react-router';
 //import the Tag component
-import Tags from './Tags';
+import ShortPost from './ShortPost';
 
 class Category extends React.Component {
     state = {
@@ -52,12 +52,9 @@ class Category extends React.Component {
 		let category = this.props.params.name;
         let categoryPosts = !!this.state.loaded ? this.filterByCategory(this.state.posts) : this.state.posts;
 
-        let items = !!this.state.loaded ? Object.keys(categoryPosts).map(id => <li key={id} className='category-item'>
-            <h3><Link to='post' params={ {id: id} } className='link-list-item' >{this.state.posts[id].title}</Link></h3>
-            <div className="post-content short-description">{this.state.posts[id].content.replace('[[', '').replace(']]', '')}</div>
-            <span className="tag-title">Tags:</span>
-            <Tags datatype="tags" data={ this.state.posts[id].tags || {} } />
-        </li>):
+        let items = !!this.state.loaded ? Object.keys(categoryPosts).map(id => 
+            <ShortPost key={id} title={this.state.posts[id].title} link={{id: id, to: 'post'}} text={this.state.posts[id].content.replace('[[', '').replace(']]', '')} tags={this.state.posts[id].tags} />
+        ):
         [<li key='loading' className='link-list-item'><em> Loading... </em></li>];
 
         return <div className="category-page">
