@@ -10,6 +10,7 @@ import PostList from './components/PostList';
 import Home from './components/Home';
 import Account from './components/Account';
 import Menus from './components/Menus';
+import Settings from './components/Settings';
 
 const {Route} = Router; //gets the Route property from Router
 
@@ -23,6 +24,7 @@ var routes = <Route handler={App}>
 	<Route name='new' path='/new' handler={NewPost} />
 	<Route name='account' path='/account' handler={Account} />
 	<Route name='menus' path='/menus' handler={Menus} />
+	<Route name='settings' path='/settings' handler={Settings} />
 </Route>;
 
 Router.run(routes, Router.HistoryLocation, Root =>

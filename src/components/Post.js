@@ -7,7 +7,7 @@ import {markdown} from 'markdown';
 import EditableElement from './EditableElement';
 import Tags from './Tags';
 import Categories from './Categories';
-import isAdmin from './isAdmin';
+import isAdmin from '../helpers/isAdmin';
 
 
 class Post extends React.Component {

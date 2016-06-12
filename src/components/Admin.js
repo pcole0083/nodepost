@@ -1,11 +1,12 @@
 //library imports
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 //custom imports
 import * as API from '../api';
 import * as LoginStatus from '../helpers/LoginStatus';
 import ListItemWrapper from './ListItemWrapper';
-import isAdmin from './isAdmin';
+import isAdmin from '../helpers/isAdmin';
 
 const auth = API.auth;
 
@@ -65,7 +66,7 @@ export default class Admin extends React.Component {
     }
 
     toggleOpen = evt => {
-        var adminBar = React.findDOMNode(this.refs.adminbar);
+        var adminBar = ReactDOM.findDOMNode(this.refs.adminbar);
         adminBar.classList.toggle('open-slide');
     }
 
@@ -97,7 +98,7 @@ export default class Admin extends React.Component {
                             <Link to="/menus" className="bar-title">Menu Editor</Link>
                             <Link to="/posts" className="bar-title"><i className="icon-pencil-squared"></i>Posts</Link>
                             <span className="bar-title"><i className="icon-user"></i>Users</span>
-                            <span className="bar-title"><i className="icon-database"></i>Settings</span>
+                            <Link to="/settings" className="bar-title"><i className="icon-database"></i>Settings</Link>
                         </div>
                     </div>
                 </div>;

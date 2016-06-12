@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 //custom imports
 import * as API from '../api';
 import ListItemWrapper from './ListItemWrapper';
-import isAdmin from './isAdmin';
+import isAdmin from '../helpers/isAdmin';
 
 export default class Menus extends React.Component {
     state = { 
