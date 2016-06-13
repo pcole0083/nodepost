@@ -7,6 +7,7 @@ export const users = new Firebase(baseUrl+'users');
 export const groups = new Firebase(baseUrl+'groups');
 export const categories = new Firebase(baseUrl+'categories');
 export const tags = new Firebase(baseUrl+'tags');
+export const settings = new Firebase(baseUrl+'settings');
 
 export const ref = new Firebase(baseUrl);
 export const _get = function(type) {

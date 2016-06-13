@@ -12,18 +12,31 @@ import Account  from './Account';
 import Home     from './Home';
 import Admin    from './Admin';
 
-class App extends React.Component {
+export default class App extends React.Component {
 	state = {
-		user: {}
+		user: {},
+        title: '',
+        tagline: ''
 	}
 
     componentDidMount() {
         AppDispatcher.registerLogin.call(this);
+        
+        API.settings.child('site_title').on('value', this.getTitle);
+        API.settings.child('tagline').on('value', this.getTagline);
+
         if(!!this.props && !!this.props.user && !!this.props.user.uid){
             API.users.child(this.props.user.uid).once('value', this.updateContent);
         }
         else {
             LoginStatus.userCheck.call(this);
+        }
+    }
+
+    componentWillUnmount(){
+        API.settings.off('value');
+        if(!!this.cleanup){
+            this.cleanup()
         }
     }
 
@@ -33,22 +46,42 @@ class App extends React.Component {
         }
     }
 
-    updateContent = (snapshot) => {
-        let json = snapshot.exportVal();
-
+    updateState = (user, title, tagline) => {
         this.setState({
-            user: json
+            title: title,
+            tagline: tagline,
+            user: user
         });
+    }
+
+    getTitle = (ss) => {
+        let site_title = ss.exportVal();
+        this.updateState(this.state.user, site_title.value, this.state.tagline);
+    }
+
+    getTagline = (ss) => {
+        let tagline = ss.exportVal();
+        this.updateState(this.state.user, this.state.title, tagline.value);
+    }
+
+    updateContent = (ss) => {
+        let json = ss.exportVal();
+        this.updateState(json, this.state.title, this.state.tagline);
     }
 
     render() {
         return <div className="page-wrapper">
-            <header className="row header">
-                <div className="three columns">
-                    <h1 className="site-title"><Link to="/">NodePost</Link></h1>
+            <header className="header">
+                <div className="row">
+                    <div className="tweleve columns">
+                        <h1 className="site-title"><Link to="/">{this.state.title}</Link></h1>
+                        <p className="tagline">{this.state.tagline}</p>
+                    </div>
                 </div>
-                <div className="nine columns">
-                    <TopMenu user={this.state.user} />
+                <div className="row">
+                    <div className="tweleve columns">
+                        <TopMenu user={this.state.user} />
+                    </div>
                 </div>
             </header>
         	<div className="row">
@@ -63,5 +96,3 @@ class App extends React.Component {
     setUser = (user) => this.setState({ user: user })
 
 }
-
-export default App;
