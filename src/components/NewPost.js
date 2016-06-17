@@ -24,7 +24,9 @@ export default class NewPost extends React.Component {
             status:     'draft',
             visibility: 'visibile',
             image:      '',
-            slug:       ''
+            slug:       '',
+            created:    Date.now(),
+            updated:    Date.now()
         }
     }
 
@@ -67,6 +69,9 @@ export default class NewPost extends React.Component {
             ReactDOM.findDOMNode(this.refs.slug).value = this.state.newPost.slug;
         }
 
+        newPost.created = Date.now();
+        newPost.updated = Date.now();
+
         this.setState({'newPost': newPost});
     }
 
@@ -96,6 +101,10 @@ export default class NewPost extends React.Component {
 
         if(!!value && newPost[name].push ){
             newPost[name].push(value);
+            
+            newPost.created = Date.now();
+            newPost.updated = Date.now();
+
             this.setState({'newPost': newPost});
             evt.target.value = '';
         }

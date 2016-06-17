@@ -47,7 +47,9 @@ class Post extends React.Component {
             visibility: json.visibility || 'visibile',
             image:      json.image || null,
             slug:       json.slug || json.id,
-            editing:    false
+            editing:    false,
+            created:    json.created || Date.now(),
+            updated:    json.updated || Date.now() 
         });
     }
 
@@ -109,6 +111,11 @@ class Post extends React.Component {
         let post = this.state.post
         let name = evt.target.name;
         post[name] = !!evt && !!evt.target ? evt.target.value : post[name];
+
+        if(!post.created){
+            post.created = Date.now();
+        }
+        post.updated = Date.now();
 
         this.setState({'post': post});
     }

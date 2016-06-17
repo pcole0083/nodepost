@@ -94,11 +94,12 @@ export default class Admin extends React.Component {
                             <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared-alt"></i>New</Link></button>
                         </div>
                         <div className="tweleve columns">
-                            <Link to="/" className="admin-account-home">Home</Link>
-                            <Link to="/menus" className="bar-title">Menu Editor</Link>
+                            <Link to="/" className="admin-account-home"><i className="icon-home"></i>Home</Link>
+                            <Link to="/" className="bar-title"><i className="icon-plus-squared-alt"></i>Dashboard</Link>
                             <Link to="/posts" className="bar-title"><i className="icon-pencil-squared"></i>Posts</Link>
                             <span className="bar-title"><i className="icon-user"></i>Users</span>
                             <Link to="/settings" className="bar-title"><i className="icon-database"></i>Settings</Link>
+                            <Link to="/menus" className="bar-title">Menu Editor</Link>
                         </div>
                     </div>
                 </div>;
