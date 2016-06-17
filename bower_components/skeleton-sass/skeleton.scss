@@ -56,6 +56,9 @@ body {
 .caps {
 	text-transform: uppercase;
 }
+.center {
+	text-align: center;
+}
 .button {
 	&.selected {
 		background-color: $selected-default;
@@ -268,7 +271,6 @@ $top-menu-color: rgba(240,245,250,1);
 		position: absolute;
 	    height: 24px;
 	    width: 24px;
-	    padding-left: 3px;
 	    text-align: center;
 
 		@include transition(transform 360ms ease-in-out);
@@ -393,6 +395,7 @@ $title-color: $white;
 .table-set {
 	.link-list {
 		border-bottom: 1px solid $title-bg;
+		padding-left: 0;
 	}
 }
 

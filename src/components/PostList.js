@@ -36,13 +36,15 @@ export default class PostList extends React.Component {
             let post = posts[id];
             return <li key={id} className='link-list'>
         		<div className="row">
-                    <span className="one columns"><input type='radio' name='homepage' className='link-list-radio' data-id={id} onChange={this.updateHome} checked={post.homepage} /></span>
-                    <span className='three columns'><Link to='post' params={ {id: id} } className='link-list-item' >{post.title}</Link></span>
-                    <span className='one columns'>{Object.keys(post.authors).map(ad => {return post.authors[ad]}).join(', ')}</span>
+                    <span className="one columns icon-col center"><input type='radio' name='homepage' className='link-list-radio' data-id={id} onChange={this.updateHome} checked={post.homepage} /></span>
+                    <span className='four columns'>
+                        <Link to='post' params={ {id: id} } className='link-list-item' >{post.title}</Link><br/>
+                        <span className="authors-label">Author(s):</span> {Object.keys(post.authors).map(ad => {return post.authors[ad]}).join(', ')}
+                    </span>
                     <span className='two columns'>{Object.keys(post.categories).map(ad => {return post.categories[ad]}).join(', ')}</span>
                     <span className='two columns'>{Object.keys(post.tags).map(ad => {return post.tags[ad]}).join(', ')}</span>
                     <span className='two columns'>{new Date(post.updated).toLocaleString()}</span>
-                    <span className='one columns'><i className="icon-minus-squared-alt" title="Delete"></i></span>
+                    <span className='one columns icon-col center'><i className="icon-trash" title="Delete"></i></span>
                 </div>
         	</li>
         }):
@@ -52,13 +54,12 @@ export default class PostList extends React.Component {
         	<ul className="table-set">
                 <li className='link-list title-row'>
                     <div className="row">
-                        <span className="one columns"><i className="icon-home" title="Home Post"></i></span>
-                        <span className='three columns'>Post Title</span>
-                        <span className='one columns'>Author</span>
+                        <span className="one columns icon-col center"><i className="icon-home" title="Home Post"></i></span>
+                        <span className='four columns'>Post Title</span>
                         <span className='two columns'>Categories</span>
                         <span className='two columns'>Tags</span>
                         <span className='two columns'>Updated</span>
-                        <span className='one columns'><i className="icon-minus-squared-alt" title="Delete"></i></span>
+                        <span className='one columns icon-col center'><i className="icon-trash" title="Delete"></i></span>
                     </div>
                 </li>
                 {items}
