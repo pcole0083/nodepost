@@ -37,10 +37,12 @@ export default class PostList extends React.Component {
     	let items = !!this.state.loaded ? Object.keys(posts).map(id => {
             let post = posts[id];
             let undoId = 'undo_'+id;
+            let homePostClass = !!post.homepage ? 'icon-check-1' : 'icon-check-empty';
             return <li key={id} className='link-list'>
         		<div className="row">
                     <span className="one columns icon-col center">
                         <input type='radio' name='homepage' className='link-list-radio' data-id={id} onChange={this.updateHome} checked={post.homepage} />
+                        <i className={homePostClass} title="Home Post"></i>
                     </span>
                     <span className='three columns'>
                         <Link to='post' params={ {id: id} } className='link-list-item' >{post.title}</Link><br/>
@@ -116,7 +118,7 @@ export default class PostList extends React.Component {
         undoBlock.classList.add('fade-in');
         undoBlock.classList.remove('hidden');
 
-        console.log(this.props);
+        //console.log(this.props);
 
         this.setState({
             loaded: this.state.loaded,
