@@ -117,6 +117,9 @@ export default class PostList extends React.Component {
         }
         undoBlock.classList.add('fade-in');
         undoBlock.classList.remove('hidden');
+        setTimeout(function(){
+            undoBlock.classList.add('fade-to-black');
+        }, 2000);
 
         //console.log(this.props);
 

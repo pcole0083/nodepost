@@ -25,6 +25,15 @@
 	@include prefix(transition, $args);
 }
 
+$white: rgba(255,255,255,1);
+$black: rgba(0,0,0,1);
+
+$link-default: $gray;
+$link-hover:   $black;
+
+$selected-default: #597e85;
+$remove: #bd2626;
+
 @include keyframes(fade-in) {
   0%   { opacity: 0; }
   100% { opacity: 1.0; }
@@ -34,15 +43,11 @@
   0%   { opacity: 1.0; }
   100% { opacity: 0; }
 }
-
-$white: rgba(255,255,255,1);
-$black: rgba(0,0,0,1);
-
-$link-default: $gray;
-$link-hover:   $black;
-
-$selected-default: #597e85;
-$remove: #bd2626;
+$light-red: fade-out(red, 0.3);
+@include keyframes(fade-to-black) {
+  0%   { background-color: $light-red; }
+  100% { background-color: $black; }
+}
 
 * {
 	@include box-sizing(border-box);
@@ -129,6 +134,11 @@ body {
 .fade-out {
 	@include prefix(animation-fill-mode, forwards);
 	@include animation('fade-out 2s 1');
+}
+
+.fade-to-black {
+	@include prefix(animation-fill-mode, forwards);
+	@include animation('fade-to-black 10s 1');
 }
 
 $top-menu-bg: rgba(50, 55, 60, 1);
@@ -443,9 +453,10 @@ $title-color: $white;
 			padding-top: 22px;
 			padding-right: 18px;
 			
-
-			background-color: fade-out(red, 0.3);
+			background-color: $light-red;
 			color: $white;
+
+			cursor: pointer;
 		}
 	}
 }
