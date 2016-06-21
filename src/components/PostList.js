@@ -38,6 +38,7 @@ export default class PostList extends React.Component {
             let post = posts[id];
             let undoId = 'undo_'+id;
             let homePostClass = !!post.homepage ? 'icon-check-1' : 'icon-check-empty';
+            let homeNoDelete =  !!post.homepage ? 'hidden' : 'icon-trash';
             return <li key={id} className='link-list'>
         		<div className="row">
                     <span className="one columns icon-col center">
@@ -52,7 +53,7 @@ export default class PostList extends React.Component {
                     <span className='two columns'>{Object.keys(post.categories).map(ad => {return post.categories[ad]}).join(', ')}</span>
                     <span className='two columns'>{Object.keys(post.tags).map(ad => {return post.tags[ad]}).join(', ')}</span>
                     <span className='two columns'>{new Date(post.updated).toLocaleString()}</span>
-                    <span className='one columns icon-col center'><i className="icon-trash" title="Delete" data-undo-id={undoId} data-id={id} onClick={this.beginDelete} ></i></span>
+                    <span className='one columns icon-col center'><i className={homeNoDelete} title="Delete" data-undo-id={undoId} data-id={id} onClick={this.beginDelete} ></i></span>
                 </div>
                 <div ref={undoId} data-id={id} className="overlay deleting right hidden" onClick={this.undoDelete}>
                     <i className="icon-back" title="Undo"></i><span className="undo">UNDO</span>
@@ -155,7 +156,7 @@ export default class PostList extends React.Component {
         setTimeout(function(){
             undoOverlay.classList.add('hidden');
             undoOverlay.classList.remove('fade-out');
-        }, 1999);
+        }, 400);
         
     }
 }

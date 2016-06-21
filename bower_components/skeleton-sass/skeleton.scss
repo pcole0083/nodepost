@@ -27,6 +27,10 @@
 
 $white: rgba(255,255,255,1);
 $black: rgba(0,0,0,1);
+$red: rgba(229,0,0,1);
+$light-red: fade-out($red, 0.3);
+
+$blue: rgba(135,191,206,1);
 
 $link-default: $gray;
 $link-hover:   $black;
@@ -43,7 +47,7 @@ $remove: #bd2626;
   0%   { opacity: 1.0; }
   100% { opacity: 0; }
 }
-$light-red: fade-out(red, 0.3);
+
 @include keyframes(fade-to-black) {
   0%   { background-color: $light-red; }
   100% { background-color: $black; }
@@ -94,9 +98,20 @@ body {
 .icon-col {
 	position: relative;
 
-	[class^="icon-"]:hover,
-	[class*=" icon-"]:hover {
-		cursor: pointer;
+	[class^="icon-"],
+	[class*=" icon-"] {
+		@include transition(color 300ms linear);
+		
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.icon-clipboard:hover {
+		color: $blue;
+	}
+	.icon-trash:hover {
+		color: $light-red;
 	}
 }
 

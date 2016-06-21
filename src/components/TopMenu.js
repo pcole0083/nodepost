@@ -8,7 +8,7 @@ import {Link} from 'react-router';
 export default class TopMenu extends React.Component {
     state = {
     	loaded: false,
-    	categories: {}
+    	menuitems: {}
     }
 
     constructor(props, context) {
@@ -17,16 +17,16 @@ export default class TopMenu extends React.Component {
     }
 
     componentDidMount() {
-    	API.categories.on('value', ss => this.setState({
-    		categories: ss.exportVal() || {},
+    	API.menus.child('topmenu').on('value', ss => this.setState({
+    		menuitems: ss.exportVal() || {},
     		loaded: true
     	}));
     }
 
     render() {
-    	let items = !!this.state.loaded ? Object.keys(this.state.categories).map(id => 
+    	let items = !!this.state.loaded ? Object.keys(this.state.menuitems).map(id => 
             <li key={id} className='menu-item'>
-                <Link to='category' params={ {name: this.state.categories[id]} } className='menu-link' >{this.state.categories[id]}</Link>
+                <Link to='category' params={ {name: this.state.menuitems[id].label} } className='menu-link' >{this.state.menuitems[id].label}</Link>
     	   </li>
         ):
     	[<li key='loading' className='menu-item'><em>Loading...</em></li>];

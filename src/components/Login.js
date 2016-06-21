@@ -76,8 +76,8 @@ export default class Login extends React.Component {
 
         return <div className='row'>
             <p>{this.state.message}</p>
-            <p> <input className='u-full-width' placeholder='Username' ref='email' type='text' /></p>
-            <p> <input className='u-full-width' placeholder='Password' ref='password' type='password' onKeypress={this.enter} /></p>
+            <p> <input className='u-full-width' placeholder='Username' ref='email' type='text' onKeyUp={this.enter} /></p>
+            <p> <input className='u-full-width' placeholder='Password' ref='password' type='password' onKeyUp={this.enter} /></p>
             <p>
                 <button onClick={this.signin}> Sign In </button>
                 <button onClick={this.signup}> Sign Up </button>
@@ -85,7 +85,8 @@ export default class Login extends React.Component {
         </div>;
     }
     enter  = evt => {
-        if( evt.charCode !== 13 ){
+        let key = evt.keyCode; //new versions of React my need to use key or charCode
+        if( key !== 13 ){
             return;
         }
         this.sign('in', evt);

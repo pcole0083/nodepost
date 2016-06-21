@@ -3,103 +3,85 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //custom imports
 import * as API from '../api';
-import ListItemWrapper from './ListItemWrapper';
+import {Link} from 'react-router';
 import isAdmin from '../helpers/isAdmin';
 
 export default class Menus extends React.Component {
     state = { 
         user: {},
-        groups: {},
-        availableGroups: {}
+        menus: {},
+        categories: {}
     }
 
     componentDidMount() {
-        let state = this.state || {};
-        //auth.getUser(userData.uid, this.updateContent);
-        if(!state.availableGroups){
-            API.groups.orderByValue().on('value', this.updateContent);
+        API.menus.orderByValue().on('value', this.updateMenus);
+        API.categories.orderByValue().once('value', this.loadCategories);
+    }
+
+    componentWillUnmount(){
+        API.menus.off('value');
+        if(!!this.cleanup){
+            this.cleanup();
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let state = this.state || {};
-
-        console.log("Menu nextProps");
-        console.log(nextProps);
-
-        if(!!nextProps.user && (this.props.user.username !== nextProps.user.username) ){
-            let groups = nextProps.user.groups || {};
-
-            this.setState({
-                user: nextProps.user,
-                groups: groups,
-                availableGroups: state.availableGroups || {}
-            });
-        }
+    updateState = (name, value) => {
+        let newState = this.state;
+        newState[name] = value;
+        this.setState(newState);
     }
 
-    componentWillUpdate(){
-        console.log("Menu will update");
-
-        let state = this.state || {};
-
-        console.log(state);
-
-        let user = state.user || {};
-        let groups = state.groups || {};
-        let availableGroups = state.availableGroups || {};
-
-        if(!!this.props.user && !!this.props.user.groups && this.props.user.username !== state.user.username){
-            user = this.props.user;
-            groups = this.props.user.groups
-
-            this.setState({
-                user: user,
-                groups: groups,
-                availableGroups: state.availableGroups || {}
-            });
-        }
+    loadCategories = (ss) => {
+        let categories = ss.exportVal();
+        this.updateState('categories', categories);
     }
 
-    updateContent = (snapshot) => {
-        let json = snapshot.val();
-
-        console.log("updateContent");
-        console.log(json);
-
-        let groups = this.props.user && this.props.user.groups ? this.props.user.groups : {};
-
-        this.setState({
-            user: this.props.user || {},
-            groups: groups,
-            availableGroups: json || {}
-        });
+    updateMenus = (ss) => {
+        let menus = ss.exportVal();
+        this.updateState('menus', menus);
     }
 
     render() {
         let state = this.state || {};
-        let groups = '';
-        let adminUser = '';
+        let topmenu = '';
+        let adminUser = false;
+        let categories = '';
 
-        console.log("render");
-        console.log(this.state);
+        if (!!this.props.user && !!this.props.user.username){
 
-        if (!!state.user && !!state.user.username){
-            if(!!state.groups) {
-                adminUser = isAdmin(state.groups);
+            if(!!this.props.user.groups) {
+                adminUser = isAdmin(this.props.user.groups);
             }
 
             if(adminUser) {
-                groups = Object.keys(state.groups).map(id => <ListItemWrapper key={id} data={state.groups[id]} /> );
+                if( !!state.menus && !!state.menus['topmenu'] ){
+                    topmenu = Object.keys(state.menus['topmenu']).map(id => 
+                        <li key={id} data-id={id} data-type={state.menus['topmenu'][id].type} >
+                            <Link to={state.menus['topmenu'][id].type} params={ {name: state.menus['topmenu'][id].label} } >{state.menus['topmenu'][id].label}</Link>
+                        </li>
+                    );
+                }
+
+                if( !!state.categories && !!state.categories ){
+                    categories = Object.keys(state.categories).map(id => 
+                        <li key={id} data-id={id} data-type="category" onClick={this.addToMenu}>{state.categories[id]}</li>
+                    );
+                }
 
                 return <div className='row'>
                     <article>
                         <h1>Menus</h1>
                         <p>Edit menus here. On left will be collapsable list of pages, posts, categories, and custom links. On right is menu name / title and links added to the menu.</p>
-                        <h2>User Groups</h2>
-                        <ul>{groups}</ul>
-                        <p><input className='add-group-input' placeholder='Add Group' ref='group' type='text' onKeyPress={this.onEnter} /></p>
-                        <p><button onClick={this.addGroup}>Add Group</button></p>
+                        <div className="row">
+                            <div className="six columns">
+                                <h2>Top Menu</h2>
+                                <ul>{topmenu}</ul>
+                            </div>
+                            <div className="six columns">
+                                <h2>Categoires</h2>
+                                <ul>{categories}</ul>
+                            </div>
+                        </div>
                     </article>
                 </div>;
             }
@@ -107,30 +89,20 @@ export default class Menus extends React.Component {
         return <div className='row'></div>;
     }
 
-    onEnter = evt => {
-        if( evt.charCode !== 13 ){
-            return;
-        }
-        this.add('group', evt);
-    }
-    addGroup = evt => this.add('group', evt);
-    add = (name, evt) => {
-        var username = this.props.user.username,
-            group = ReactDOM.findDOMNode(this.refs.group).value;
-        if( !this.exists('group', group) ){
-            API.groups.push(group);
-        }
-    }
-    exists(userProp, newProp) {
-        let prop = this.props.user[userProp];
+    addToMenu = (evt) => {
+        var item = evt.target,
+            type = item.getAttribute('data-type'),
+            id = item.getAttribute('data-id');
 
-        if( !prop ){
-            return false;
-        }
+        if( !!this.state[type] && !!this.state[type][id] ){
+            let newMenuItem = {
+                id: id,
+                type: type,
+                label: this.state[type][id],
+                stamp: Date.now()
+            };
 
-        let filtered = Object.keys(prop).filter(function(key){
-            return newProp === prop[key];
-        });
-        return filtered.length > 0;
+            API.menus.child('topmenu').push(newMenuItem);
+        }
     }
 }
