@@ -85,6 +85,12 @@ body {
 .right {
 	text-align: right;
 }
+.f-left {
+	float: left;
+}
+.f-right {
+	float: right;
+}
 .button {
 	&.selected {
 		background-color: $selected-default;
@@ -110,8 +116,11 @@ body {
 	.icon-clipboard:hover {
 		color: $blue;
 	}
-	.icon-trash:hover {
-		color: $light-red;
+	.icon-cancel-squared,
+	.icon-trash {
+		&:hover {
+			color: $light-red;
+		}
 	}
 }
 
@@ -478,6 +487,39 @@ $title-color: $white;
 
 .category-post-list {
 	list-style: none;
+}
+
+.table-borders {
+	border: 1px solid $title-bg;
+
+	.six.columns {
+		width: 50%;
+		margin: 0;
+
+		&:nth-child(even){
+			border-left: 1px solid $title-bg;
+		}
+	}
+
+	ul,
+	li {
+		list-style: none;
+		margin-bottom: 0;
+	}
+
+	h2 {
+		padding: 8px;
+	}
+
+	li {
+		border-top: 1px solid $title-bg;
+		padding: 8px;
+		margin-bottom: 0;
+
+		&:last-child {
+			border-bottom: 1px solid $title-bg;
+		}
+	}
 }
 
 /* MEDIA QUERIES

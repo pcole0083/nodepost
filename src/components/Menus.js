@@ -10,7 +10,7 @@ export default class Menus extends React.Component {
     state = { 
         user: {},
         menus: {},
-        categories: {}
+        category: {}
     }
 
     componentDidMount() {
@@ -33,7 +33,7 @@ export default class Menus extends React.Component {
 
     loadCategories = (ss) => {
         let categories = ss.exportVal();
-        this.updateState('categories', categories);
+        this.updateState('category', categories);
     }
 
     updateMenus = (ss) => {
@@ -56,15 +56,15 @@ export default class Menus extends React.Component {
             if(adminUser) {
                 if( !!state.menus && !!state.menus['topmenu'] ){
                     topmenu = Object.keys(state.menus['topmenu']).map(id => 
-                        <li key={id} data-id={id} data-type={state.menus['topmenu'][id].type} >
-                            <Link to={state.menus['topmenu'][id].type} params={ {name: state.menus['topmenu'][id].label} } >{state.menus['topmenu'][id].label}</Link>
+                        <li className="icon-col" key={id} data-id={id} data-type={state.menus['topmenu'][id].type} >
+                            <Link to={state.menus['topmenu'][id].type} params={ {name: state.menus['topmenu'][id].label} } >{state.menus['topmenu'][id].label}</Link><i className="icon-cancel-squared f-right" data-id={id} data-type={state.menus['topmenu'][id].type} onClick={this.removeFromTopMenu}></i>
                         </li>
                     );
                 }
 
-                if( !!state.categories && !!state.categories ){
-                    categories = Object.keys(state.categories).map(id => 
-                        <li key={id} data-id={id} data-type="category" onClick={this.addToMenu}>{state.categories[id]}</li>
+                if( !!state.category && !!state.category ){
+                    categories = Object.keys(state.category).map(id => 
+                        <li key={id} data-id={id} data-type="category" onClick={this.addToTopMenu}>{state.category[id]}</li>
                     );
                 }
 
@@ -72,7 +72,7 @@ export default class Menus extends React.Component {
                     <article>
                         <h1>Menus</h1>
                         <p>Edit menus here. On left will be collapsable list of pages, posts, categories, and custom links. On right is menu name / title and links added to the menu.</p>
-                        <div className="row">
+                        <div className="row table-borders">
                             <div className="six columns">
                                 <h2>Top Menu</h2>
                                 <ul>{topmenu}</ul>
@@ -89,12 +89,29 @@ export default class Menus extends React.Component {
         return <div className='row'></div>;
     }
 
-    addToMenu = (evt) => {
-        var item = evt.target,
-            type = item.getAttribute('data-type'),
+    removeFromMenu = (menuName, item) => {
+        if(!menuName || !item){
+            return;
+        }
+        var type = item.getAttribute('data-type'),
             id = item.getAttribute('data-id');
 
-        if( !!this.state[type] && !!this.state[type][id] ){
+        API.menus.child(menuName+'/'+id).remove();
+    }
+
+    removeFromTopMenu = (evt) => {
+        this.removeFromMenu('topmenu', evt.target);
+    }
+
+    addToMenu = (menuName, item) => {
+        if(!menuName || !item){
+            return;
+        }
+
+        var type = item.getAttribute('data-type'),
+            id = item.getAttribute('data-id');
+
+        if( !this.state.menus[menuName][id] && !!this.state[type] && !!this.state[type][id] ){
             let newMenuItem = {
                 id: id,
                 type: type,
@@ -102,7 +119,11 @@ export default class Menus extends React.Component {
                 stamp: Date.now()
             };
 
-            API.menus.child('topmenu').push(newMenuItem);
+            API.menus.child(menuName).push(newMenuItem);
         }
+    }
+
+    addToTopMenu = (evt) => {
+        this.addToMenu('topmenu', evt.target)
     }
 }
