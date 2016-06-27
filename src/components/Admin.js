@@ -91,7 +91,7 @@ export default class Admin extends React.Component {
                     </div>
                     <div className='row'>
                         <div className="tweleve columns">
-                            <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared-alt"></i>New</Link></button>
+                            <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared"></i>New</Link></button>
                         </div>
                         <div className="tweleve columns">
                             <Link to="/" className="admin-account-home"><i className="icon-home"></i>Home</Link>
@@ -99,7 +99,7 @@ export default class Admin extends React.Component {
                             <Link to="/posts" className="bar-title"><i className="icon-newspaper"></i>Posts</Link>
                             <span className="bar-title"><i className="icon-users"></i>Users</span>
                             <Link to="/settings" className="bar-title"><i className="icon-database"></i>Settings</Link>
-                            <Link to="/menus" className="bar-title">Menu Editor</Link>
+                            <Link to="/menus" className="bar-title"><i className="icon-list"></i>Menu Editor</Link>
                         </div>
                     </div>
                 </div>;
