@@ -61,6 +61,17 @@ body {
 	background-color: $base-color;
 }
 
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+select {
+	height: 32px;
+}
+
 /**
  * Helpers
  */
@@ -91,7 +102,13 @@ body {
 .f-right {
 	float: right;
 }
+
+button,
 .button {
+	height: 32px;
+	line-height: 32px;
+	padding: 0 1rem;
+
 	&.selected {
 		background-color: $selected-default;
 		color: $white;
