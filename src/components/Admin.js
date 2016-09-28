@@ -81,7 +81,7 @@ export default class Admin extends React.Component {
 
             if(isAdmin) {
                 return <div className="adminbar" ref="adminbar">
-                    <div className='row'>
+                    <div className='row row-padding'>
                         <div className="ten columns">
                             <Link to="/account" className="admin-account-link">Welcome {this.state.user.username}</Link>
                         </div>
@@ -89,12 +89,14 @@ export default class Admin extends React.Component {
                             <i className="icon-cog toggle-switch" onClick={this.toggleOpen} ></i>
                         </div>
                     </div>
-                    <div className='row'>
+                    <div className='row row-padding'>
                         <div className="tweleve columns">
                             <button className="admin-new-post"><Link to="/new"><i className="icon-plus-squared"></i>New</Link></button>
                         </div>
+                    </div>
+                    <div className='row'>
                         <div className="tweleve columns">
-                            <Link to="/" className="admin-account-home"><i className="icon-home"></i>Home</Link>
+                            <Link to="/" className="bar-title admin-account-home"><i className="icon-home"></i>Home</Link>
                             <Link to="/" className="bar-title"><i className="icon-gauge"></i>Dashboard</Link>
                             <Link to="/posts" className="bar-title"><i className="icon-newspaper"></i>Posts</Link>
                             <span className="bar-title"><i className="icon-users"></i>Users</span>

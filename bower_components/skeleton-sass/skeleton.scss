@@ -336,7 +336,7 @@ $top-menu-color: rgba(240,245,250,1);
 	left: 0;
 	width: 180px;
 	height:	100%;
-	padding: 5px 10px;
+	padding: 5px 0;
 
 	background-color: $see-through;
 	color: $white;
@@ -349,6 +349,14 @@ $top-menu-color: rgba(240,245,250,1);
 
 		.toggle-switch {
 			@include prefix(transform, rotateZ(360deg));
+		}
+
+		.bar-title {
+			border-bottom-color: $white;
+
+			&:first-child {
+				border-top-color: $white;
+			}
 		}
 	}
 
@@ -370,14 +378,22 @@ $top-menu-color: rgba(240,245,250,1);
 		margin: 0;
 	}
 
+	.row-padding {
+		padding: 0 10px;
+	}
+
 	.bar-title {
 		display: block;
+		padding: 10px;
+		border-bottom: 1px solid transparent;
 		color: $white;
 		text-decoration: none;
-		@include transition(color 300ms ease-in-out);
+
+		@include transition(color 300ms ease-in-out, border-color 300ms ease-in-out);
 
 		&:first-child {
 			margin-left: 0;
+			border-top: 1px solid transparent;
 		}
 
 		&:hover {
@@ -385,8 +401,8 @@ $top-menu-color: rgba(240,245,250,1);
 		}
 	}
 	.admin-account-home,
-	.admin-account-link{
-		display: inline-block;
+	.admin-account-link {
+		//display: inline-block;
 		color: $white;
 		text-decoration: none;
 
@@ -401,6 +417,7 @@ $top-menu-color: rgba(240,245,250,1);
 		height: 20px;
 		line-height: 16px;
 		padding: 0 1.4em 0 1em;
+		margin: 1.6em 0;
 		background-color: $button-color;
 
 		@include transition(all 200ms ease-in-out);
