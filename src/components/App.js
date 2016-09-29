@@ -89,6 +89,13 @@ export default class App extends React.Component {
         			<RouteHandler user={this.state.user} />
         		</div>
         	</div>
+            <footer className="footer">
+                <div className="row">
+                    <div className="tweleve columns">
+                        <TopMenu user={this.state.user} />
+                    </div>
+                </div>
+            </footer>
             <Admin user={this.state.user} dispatcher={AppDispatcher.dispatcher} /> 
         </div>;
     }

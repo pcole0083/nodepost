@@ -9,7 +9,7 @@
 	/* Overrides */
 	$gutter: percent($base-gutter-width) / 100;
 	.container {
-		@if($new == true) { width: 80%; } // FIXME: make this dynamic somehow
+		@if($new == true) { width: 100%; } // FIXME: make this dynamic somehow
 	}
 	@if($new == false) {
 		.column,
