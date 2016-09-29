@@ -68,22 +68,27 @@ export default class Login extends React.Component {
     }
 
     render() {
-        if (!!this.state.user && !!this.state.user.username)
-            return <div className='row'>
-                <p> Hello {this.state.user.username}! </p>
-                <p> <button onClick={this.signout}> Sign Out </button> </p>
-            </div>;
+        if (!!this.props.user && !!this.props.user.username)
+            return <article>
+                <div className='row'>
+                    <p> Hello {this.props.user.username}! </p>
+                    <p> <button onClick={this.signout}> Sign Out </button> </p>
+                </div>
+            </article>;
 
-        return <div className='row'>
-            <p>{this.state.message}</p>
-            <p> <input className='u-full-width' placeholder='Username' ref='email' type='text' onKeyUp={this.enter} /></p>
-            <p> <input className='u-full-width' placeholder='Password' ref='password' type='password' onKeyUp={this.enter} /></p>
-            <p>
-                <button onClick={this.signin}> Sign In </button>
-                <button onClick={this.signup}> Sign Up </button>
-            </p>
-        </div>;
+        return <article>
+            <div className='row'>
+                <p>{this.state.message}</p>
+                <p> <input className='u-full-width' placeholder='Username' ref='email' type='text' onKeyUp={this.enter} /></p>
+                <p> <input className='u-full-width' placeholder='Password' ref='password' type='password' onKeyUp={this.enter} /></p>
+                <p>
+                    <button onClick={this.signin}> Sign In </button>
+                    <button onClick={this.signup}> Sign Up </button>
+                </p>
+            </div>
+        </article>;
     }
+
     enter  = evt => {
         let key = evt.keyCode; //new versions of React my need to use key or charCode
         if( key !== 13 ){

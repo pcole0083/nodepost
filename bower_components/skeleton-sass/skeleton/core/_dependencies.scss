@@ -121,6 +121,13 @@
 				left: if($isFluid, 2%, 0);
 				right: if($isFluid, 2%, 0);
 			};
+			&:first-child:last-child,
+			&:only-child {
+				margin: {
+					left: 0;
+					right: 0;
+				}
+			}
 		}
 		@for $i from 1 through $colCount {
 			@if ($i == 1) {

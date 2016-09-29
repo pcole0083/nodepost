@@ -5,8 +5,10 @@ import {Link} from 'react-router';
 //custom imports
 import * as API from '../api';
 import * as LoginStatus from '../helpers/LoginStatus';
+import LogoutBtn from './LogoutBtn';
 import ListItemWrapper from './ListItemWrapper';
 import isAdmin from '../helpers/isAdmin';
+
 
 const auth = API.auth;
 
@@ -102,6 +104,11 @@ export default class Admin extends React.Component {
                             <span className="bar-title"><i className="icon-users"></i>Users</span>
                             <Link to="/settings" className="bar-title"><i className="icon-database"></i>Settings</Link>
                             <Link to="/menus" className="bar-title"><i className="icon-list"></i>Menu Editor</Link>
+                        </div>
+                    </div>
+                    <div className='row row-padding'>
+                        <div className="tweleve columns">
+                            <LogoutBtn className="admin-new-post admin-bar-logout" user={this.props.user} />
                         </div>
                     </div>
                 </div>;

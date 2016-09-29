@@ -144,6 +144,7 @@ button,
 /* Add custom styles here */
 .container {
 	.site-title {
+		@include containment;
 		margin-bottom: 0;
 
 		a {
@@ -153,13 +154,23 @@ button,
 		}
 	}
 	.header {
-		border-bottom: 1px solid $gray;
-
 		.tagline {
+			@include containment;
 			margin-bottom: 0;
 		}
+	}
+}
 
+.footer {
+	> .row {
+		margin-bottom: 0;
+	}
+}
 
+.content {
+	> article,
+	> .category-page {
+		@include containment;
 	}
 }
 
@@ -185,10 +196,14 @@ button,
 $top-menu-bg: rgba(50, 55, 60, 1);
 $top-menu-color: rgba(240,245,250,1);
 
-.top-nav {
+.nav-menu {
+	margin: 0 0 22px 0;
+	background-color: $top-menu-bg;
+	border-bottom: 1px solid $gray;
+
 	.nav-list {
-		margin: 0 0 22px 0;
-		background-color: $top-menu-bg;
+		@include containment;
+		margin-bottom: 0;
 	}
 	.menu-item {
 		list-style: none;
@@ -210,6 +225,10 @@ $top-menu-color: rgba(240,245,250,1);
 				color: darken($top-menu-color, 80%);
 			}
 		}
+	}
+
+	.footer & {
+		margin-bottom: 0;
 	}
 }
 
@@ -347,6 +366,11 @@ $top-menu-color: rgba(240,245,250,1);
 	&.open-slide {
 		@include prefix(transform, translateX(0));
 
+		.admin-account-link,
+		.admin-new-post {
+			opacity: 1;
+		}
+
 		.toggle-switch {
 			@include prefix(transform, rotateZ(360deg));
 		}
@@ -362,6 +386,8 @@ $top-menu-color: rgba(240,245,250,1);
 
 	.toggle-switch {
 		position: absolute;
+		top: 5px;
+		right: 4px;
 	    height: 24px;
 	    width: 24px;
 	    text-align: center;
@@ -402,7 +428,6 @@ $top-menu-color: rgba(240,245,250,1);
 	}
 	.admin-account-home,
 	.admin-account-link {
-		//display: inline-block;
 		color: $white;
 		text-decoration: none;
 
@@ -410,8 +435,13 @@ $top-menu-color: rgba(240,245,250,1);
 			text-decoration: $link-decoration;
 		}
 	}
+	.admin-account-link {
+		opacity: 0;
+		@include transition(opacity 360ms ease-in-out);
+	}
 	.admin-new-post {
-		display: inline-block;
+		display: block;
+		width: 100%;
 		color: $white;
 		font-size: 14px;
 		height: 20px;
@@ -419,6 +449,8 @@ $top-menu-color: rgba(240,245,250,1);
 		padding: 0 1.4em 0 1em;
 		margin: 1.6em 0;
 		background-color: $button-color;
+
+		opacity: 0;
 
 		@include transition(all 200ms ease-in-out);
 
@@ -434,10 +466,6 @@ $top-menu-color: rgba(240,245,250,1);
 			text-decoration: none;
 		}
 	}
-	// .admin-account-link {
-	// 	float: right;
-	// 	text-align: right;
-	// }
 }
 
 $admin-page-heder-size: 23px;
@@ -568,17 +596,32 @@ $title-color: $white;
 @media only screen and (min-width: $tablet-width) and (max-width: $base-width - 1) { /* add code here */ }
 
 /* All Mobile Sizes (devices and browser) */
-@media only screen and (max-width: $tablet-width - 1) { /* add code here */ }
+@media only screen and (max-width: $tablet-width - 1) { 
+	.settings-group {
+		
+		.setting-item {
+
+		    .setting-label {
+		    	display: block;
+		    	width: 100%;
+		    	max-width: 36rem;
+
+		    	+ input,
+		    	+ select {
+		    		display: block;
+		    		width: 100%;
+		    		max-width: 36rem;
+		    	}
+		    }
+		}
+	}
+}
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: $mobile-landscape-width + 60) and (max-width: $tablet-width - 1) { 
-	.top-nav {
+	.nav-menu {
 		.nav-list {
-			.menu-item {
-				.menu-link:first-child {
-					padding-left: 0;
-				}
-			}
+			
 		}
 	}
 }

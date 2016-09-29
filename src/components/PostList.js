@@ -62,7 +62,7 @@ export default class PostList extends React.Component {
         }):
     	[<li key='loading'><em> Loading... </em></li>];
 
-        return <div className="fade-in">
+        return <article className="fade-in">
         	<ul className="table-set">
                 <li className='link-list title-row'>
                     <div className="row">
@@ -77,7 +77,7 @@ export default class PostList extends React.Component {
                 </li>
                 {items}
             </ul>
-        </div>;
+        </article>;
     }
 
     updateHome = evt => {

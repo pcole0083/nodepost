@@ -7,7 +7,7 @@ const {RouteHandler} = RR;
 import * as API from '../api';
 import * as AppDispatcher from '../dispatchers/AppDispatcher';
 import LoginStatus    from '../helpers/LoginStatus';
-import TopMenu  from './TopMenu';
+import Menu  from './Menu';
 import Account  from './Account';
 import Home     from './Home';
 import Admin    from './Admin';
@@ -80,19 +80,19 @@ export default class App extends React.Component {
                 </div>
                 <div className="row">
                     <div className="tweleve columns">
-                        <TopMenu user={this.state.user} />
+                        <Menu user={this.state.user} menuid="topmenu" />
                     </div>
                 </div>
             </header>
         	<div className="row">
-        		<div className="twelve columns">
+        		<div className="twelve columns content">
         			<RouteHandler user={this.state.user} />
         		</div>
         	</div>
             <footer className="footer">
                 <div className="row">
                     <div className="tweleve columns">
-                        <TopMenu user={this.state.user} />
+                        <Menu user={this.state.user} menuid="footermenu" />
                     </div>
                 </div>
             </footer>

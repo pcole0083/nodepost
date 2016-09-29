@@ -33,32 +33,32 @@ export default class Account extends React.Component {
 
     render() {
         let groups = '';
-        if (!!this.state.user && !!this.state.user.username){
-            if(!!this.state.groups) {
-                let groupData = this.state.groups;
+        if (!!this.props.user && !!this.props.user.username){
+            if(!!this.props.user.groups) {
+                let groupData = this.props.user.groups;
                 groups = <ul className="group-names" >
                     {Object.keys(groupData).map(function(id) {
                         let link = {
                             to:   'group',
                             text: groupData[id]
                         };
-                        return <ListItemWrapper key={id} data={groupData[id]} className='group-name' />;
+                        return <li key={id} className='group-name icon-col'>
+                            {link.text} <i className="icon-cancel-squared" data-id={id} ></i>
+                        </li>;
                     })}
                 </ul>;
             }
 
-            return <div className='row'>
-                <article>
+            return <article>
                     <h2>Account</h2>
-                    <p>Hello {this.state.user.username}!</p>
+                    <p>Hello {this.props.user.username}!</p>
                     <h2>User Groups</h2>
                     {groups}
                     <p><input className='add-group-input' placeholder='Add Group' ref='group' type='text' onKeyPress={this.onEnter} /></p>
                     <p><button onClick={this.addGroup}>Add Group</button></p>
-                </article>
-            </div>;
+                </article>;
         }
-        return <div className='row'><Link to="/login">Login</Link></div>;
+        return <article><div className='row'><Link to="/login">Login</Link></div></article>;
     }
 
     onEnter = evt => {
