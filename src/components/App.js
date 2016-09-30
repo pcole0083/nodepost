@@ -84,7 +84,7 @@ export default class App extends React.Component {
                     </div>
                 </div>
             </header>
-        	<div className="row">
+        	<div className="row page">
         		<div className="twelve columns content">
         			<RouteHandler user={this.state.user} />
         		</div>

@@ -589,6 +589,23 @@ $title-color: $white;
 /* Large displays */
 @media only screen and (min-width: $base-width) and (max-width: 1280px) { /* add code here */ }
 
+@media only screen and (min-width: $tablet-width) {
+	.container {
+		min-height: 100vh;
+	}
+	.header {
+		> .row:last-child {
+			margin-bottom: 0;
+		}
+	}
+	.page-wrapper {
+		> .page {
+			min-height: calc(100vh - 208px);
+			margin-bottom: 0;
+		}
+	}
+}
+
 /* Smaller than standard #{strip-units($base-width)} (devices and browsers) */
 @media only screen and (max-width: $base-width - 1) { /* add code here */ }
 
@@ -598,7 +615,7 @@ $title-color: $white;
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: $tablet-width - 1) { 
 	.settings-group {
-		
+
 		.setting-item {
 
 		    .setting-label {
