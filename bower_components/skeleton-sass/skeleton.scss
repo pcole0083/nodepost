@@ -360,11 +360,15 @@ $top-menu-color: rgba(240,245,250,1);
 	background-color: $see-through;
 	color: $white;
 
+	max-height: 35px;
+
 	@include prefix(transform, translateX(-140px));
-	@include transition(transform 300ms ease-in-out);
+	@include transition(transform 300ms ease-in-out, max-height 200ms linear);
 
 	&.open-slide {
 		@include prefix(transform, translateX(0));
+
+		max-height: 100%;
 
 		.admin-account-link,
 		.admin-new-post {
@@ -614,6 +618,13 @@ $title-color: $white;
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: $tablet-width - 1) { 
+	.container {
+		min-width: 100%;
+		> article,
+		> .category-page {
+			max-width: 100%;
+		}
+	}
 	.settings-group {
 
 		.setting-item {
