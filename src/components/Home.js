@@ -9,16 +9,29 @@ class Home extends Post {
 	state = { post: {} }
 
     componentDidMount() {
-        let home = API.posts.orderByChild('homepage').equalTo(true);
-        home.on('value', this.updateContent);
+        let home = this._findHome();
+        if(!!home){
+            home.on('value', this.updateContent);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        let home = API.posts.orderByChild('homepage').equalTo(true);
+        let home = this._findHome();
         if(!!home){
             home.off('value', this.updateContent);
             home.on('value', this.updateContent);
         }
+    }
+
+    componentWiilUnMount() {
+        let home = this._findHome();
+        if(!!home){
+            home.off('value', this.updateContent);
+        }
+    }
+
+    _findHome = () => {
+        return API.posts.orderByChild('homepage').equalTo(true);
     }
 
     updateContent = (snapshot) => {
