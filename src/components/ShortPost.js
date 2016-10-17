@@ -10,6 +10,7 @@ export default class ShortPost extends React.Component {
 		var text = this.props.text ? this.props.text : null;
 		var title = this.props.title ? this.props.title : null;
 		var link = this.props.link ? this.props.link : null;
+		var slug = this.props.slug ? this.props.slug : this.link.id;
 		var tags = this.props.tags ? this.props.tags : {};
 		var tagsClass = !tags ? 'tag-title hidden' : 'tag-title';
 
@@ -17,7 +18,7 @@ export default class ShortPost extends React.Component {
 
 		if(!!link){
 			return <li className={className}>
-				<h3><Link to={link.to} params={ {id: link.id} } className='link-list-item'>{title}</Link></h3>
+				<h3><Link to={link.to} params={ {slug: slug} } className='link-list-item'>{title}</Link></h3>
 				<div className="post-content short-description">{text}</div>
 				<span className={tagsClass} >Tags:</span>
 				<Tags datatype="tags" data={ tags } />

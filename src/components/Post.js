@@ -14,29 +14,37 @@ class Post extends React.Component {
 	state = { post: {} }
 
     componentDidMount() {
-        API.posts.child(this.props.params.id).on('value', this.updateContent);
+        //API.posts.child(this.props.params.id).on('value', this.updateContent);
+        API.posts.orderByChild('slug').equalTo(this.props.params.slug).on('value', this.updateContent);
     }
 
     componentWillReceiveProps(nextProps) {
-        API.posts.child(this.props.params.id).off('value', this.updateContent);
-        API.posts.child(nextProps.params.id).on('value', this.updateContent);
+        //API.posts.child(this.props.params.id).off('value', this.updateContent);
+        API.posts.orderByChild('slug').equalTo(this.props.params.slug).off('value', this.updateContent);
+        API.posts.orderByChild('slug').equalTo(nextProps.params.slug).on('value', this.updateContent);
+        //API.posts.child(nextProps.params.id).on('value', this.updateContent);
     }
 
     componentWillUnmount(){
         if(!!this.props && !!this.props.params && !!this.props.params.id){
-            API.posts.child(this.props.params.id).off('value');
+            //API.posts.child(this.props.params.id).off('value');
+            API.posts.orderByChild('slug').equalTo(this.props.params.slug).off('value', this.updateContent);
         }
         else if(!!this.state.post && this.state.post.id){
-            API.posts.child(this.state.post.id).off('value');
+            //API.posts.child(this.state.post.id).off('value');
+            API.posts.orderByChild('slug').equalTo(this.state.post.slug).off('value', this.updateContent);
         }
     }
 
     updateContent = (snapshot) => {
-        let json = snapshot.exportVal();
+        let jsonObj = snapshot.exportVal();
+        let keys = Object.keys(jsonObj);
+        let postId = keys[0];
+        let json = jsonObj[postId];
 
         this.setState({
             post:       json,
-            postid:     snapshot.key(),
+            postid:     postId,
             type:       json.type,
             title:      json.title, 
             content:    json.content || '',
@@ -46,7 +54,7 @@ class Post extends React.Component {
             status:     json.status || 'draft',
             visibility: json.visibility || 'visibile',
             image:      json.image || null,
-            slug:       json.slug || json.id,
+            slug:       json.slug || postId,
             editing:    false,
             created:    json.created || Date.now(),
             updated:    json.updated || Date.now() 
@@ -121,7 +129,7 @@ class Post extends React.Component {
     }
     save = evt => {
         this.update(evt);
-        API.posts.child(this.props.params.id).set(this.state.post);
+        API.posts.child(this.state.postid).set(this.state.post);
     }
 }
 

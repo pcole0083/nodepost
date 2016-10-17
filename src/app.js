@@ -17,8 +17,8 @@ const {Route} = Router; //gets the Route property from Router
 var routes = <Route handler={App}>
 	<Route name='home' path='/' handler={Home} />
 	<Route name='login' path='/login' handler={Login} />
-	<Route name='post' path='/post/:id' handler={Post} />
-	<Route name='page' path='/page/:id' handler={Post} />
+	<Route name='post' path='/post/:slug' handler={Post} />
+	<Route name='page' path='/page/:slug' handler={Post} />
 	<Route name='category' path='/category/:name' handler={Category} />
 	<Route name='postlist' path='/posts' handler={PostList} />
 	<Route name='new' path='/new' handler={NewPost} />

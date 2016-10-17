@@ -53,7 +53,7 @@ class Category extends React.Component {
         let categoryPosts = !!this.state.loaded ? this.filterByCategory(this.state.posts) : this.state.posts;
 
         let items = !!this.state.loaded ? Object.keys(categoryPosts).map(id => 
-            <ShortPost key={id} title={this.state.posts[id].title} link={{id: id, to: 'post'}} text={this.state.posts[id].content.replace('[[', '').replace(']]', '')} tags={this.state.posts[id].tags} />
+            <ShortPost key={id} slug={this.state.posts[id].slug} title={this.state.posts[id].title} link={{id: id, to: 'post'}} text={this.state.posts[id].content.replace('[[', '').replace(']]', '')} tags={this.state.posts[id].tags} />
         ):
         [<li key='loading' className='link-list-item'><em> Loading... </em></li>];
 
