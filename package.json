@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "build:js": "browserify ./src/app.js -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
-    "build:sass": "sass --update -C ./bower_components/skeleton-sass/skeleton.scss:./public/lib/skeleton/css/skeleton.css",
+    "build:sass": "sass --update -C ./src/styles/skeleton.scss:./public/lib/skeleton/css/skeleton.css",
     "build": "npm run build:js && npm run build:sass",
-    "build:watch": "watch \"npm run build\" ./src ./bower_components/skeleton-sass/skeleton"
+    "build:watch": "watch \"npm run build\" ./src"
   },
   "author": "Pat Coleman <pcole0083@gmail.com> (https://github.com/pcole0083/)",
   "license": "MIT",
