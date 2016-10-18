@@ -39,6 +39,8 @@ export default class PostList extends React.Component {
             let undoId = 'undo_'+id;
             let homePostClass = !!post.homepage ? 'icon-check-1' : 'icon-check-empty';
             let homeNoDelete =  !!post.homepage ? 'hidden' : 'icon-trash';
+            let slug = !!post.slug ? post.slug : id;
+
             return <li key={id} className='link-list'>
         		<div className="row">
                     <span className="one columns icon-col center">
@@ -46,13 +48,13 @@ export default class PostList extends React.Component {
                         <i className={homePostClass} title="Home Post"></i>
                     </span>
                     <span className='three columns'>
-                        <Link to='post' params={ {id: id} } className='link-list-item' >{post.title}</Link><br/>
+                        <Link to='post' params={ {slug: slug} } className='link-list-item' >{post.title}</Link><br/>
                         <span className="authors-label">Author(s):</span> {Object.keys(post.authors).map(ad => {return post.authors[ad]}).join(', ')}
                     </span>
                     <span className='one columns icon-col center'><i className="icon-clipboard" title="Duplicate" data-id={id} onClick={this.duplicatePost} ></i></span>
-                    <span className='two columns'>{Object.keys(post.categories).map(ad => {return post.categories[ad]}).join(', ')}</span>
-                    <span className='two columns'>{Object.keys(post.tags).map(ad => {return post.tags[ad]}).join(', ')}</span>
-                    <span className='two columns'>{new Date(post.updated).toLocaleString()}</span>
+                    <span className='two columns cats-col'>{Object.keys(post.categories).map(ad => {return post.categories[ad]}).join(', ')}</span>
+                    <span className='two columns tags-col'>{Object.keys(post.tags).map(ad => {return post.tags[ad]}).join(', ')}</span>
+                    <span className='two columns updated-col'>{new Date(post.updated).toLocaleString()}</span>
                     <span className='one columns icon-col center'><i className={homeNoDelete} title="Delete" data-undo-id={undoId} data-id={id} onClick={this.beginDelete} ></i></span>
                 </div>
                 <div ref={undoId} data-id={id} className="overlay deleting right hidden" onClick={this.undoDelete}>
@@ -62,16 +64,16 @@ export default class PostList extends React.Component {
         }):
     	[<li key='loading'><em> Loading... </em></li>];
 
-        return <article className="fade-in">
+        return <article className="fade-in posts-list">
         	<ul className="table-set">
                 <li className='link-list title-row'>
                     <div className="row">
                         <span className="one columns icon-col center"><i className="icon-home" title="Home Post"></i></span>
                         <span className='three columns'>Post Title</span>
                         <span className='one columns icon-col center'><i className="icon-clipboard" title="Duplicate"></i></span>
-                        <span className='two columns'>Categories</span>
-                        <span className='two columns'>Tags</span>
-                        <span className='two columns'>Updated</span>
+                        <span className='two columns cats-col'>Categories</span>
+                        <span className='two columns tags-col'>Tags</span>
+                        <span className='two columns updated-col'>Updated</span>
                         <span className='one columns icon-col center'><i className="icon-trash" title="Delete"></i></span>
                     </div>
                 </li>

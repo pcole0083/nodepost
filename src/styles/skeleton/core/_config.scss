@@ -36,7 +36,7 @@ $base-col-count: 16 !global; // The number of columns
 $base-width: if($is-fluid, 98%, ($base-col-width + $base-gutter-width) * $base-col-count) !global; // Calculated
 
 // BREAKPOINTS
-$tablet-width: 768px !global; // the tablet width media query
+$tablet-width: 736px !global; // the tablet width media query
 $mobile-portrait-width: 300px !global; // the mobile portrait media query
 $mobile-landscape-width: 420px !global; // the mobile landscape media query
 $mobile-fluid-width: 100%; // this value is not used with breakpoints, it is used in generating a fluid grid for mobile devices

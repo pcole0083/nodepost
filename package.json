@@ -4,6 +4,7 @@
   "description": "A simple blog platform made with modern (2016) architechture.",
   "main": "server.js",
   "scripts": {
+    "start": "node run server.js",
     "build:js": "browserify ./src/app.js -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
     "build:sass": "sass --update -C ./src/styles/skeleton.scss:./public/lib/skeleton/css/skeleton.css",
     "build": "npm run build:js && npm run build:sass",

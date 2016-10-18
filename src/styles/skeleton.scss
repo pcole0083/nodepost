@@ -349,6 +349,12 @@ $top-menu-color: rgba(240,245,250,1);
 	}
 }
 
+.post-article,
+.category-page,
+.category-post-list {
+	padding: 0 2%;
+}
+
 .adminbar {
 	position: fixed;
 	top: 0;
@@ -369,6 +375,12 @@ $top-menu-color: rgba(240,245,250,1);
 		@include prefix(transform, translateX(0));
 
 		max-height: 100%;
+
+		.row {
+			~ .row {
+				pointer-events: auto;
+			}
+		}
 
 		.admin-account-link,
 		.admin-new-post {
@@ -406,6 +418,10 @@ $top-menu-color: rgba(240,245,250,1);
 
 	.row {
 		margin: 0;
+
+		~ .row {
+			pointer-events: none;
+		}
 	}
 
 	.row-padding {
@@ -618,7 +634,7 @@ $title-color: $white;
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: $tablet-width - 1) { 
-	.container {
+	.content {
 		min-width: 100%;
 		> article,
 		> .category-page {
@@ -643,6 +659,39 @@ $title-color: $white;
 		    }
 		}
 	}
+	.table-set {
+		.link-list {
+			display: table;
+			width: 100%;
+			clear: both;
+
+			> .row {
+				display: table-row;
+
+				> .columns {
+					display: table-cell;
+					width: 17%;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+
+				    &.icon-col {
+				    	min-width: 12px;
+				    	max-width: 24px;
+				    }
+
+				    &.tags-col,
+					.authors-label,
+					.authors-label ~ span {
+						display: none;
+					}
+
+					.link-list-item {
+						word-wrap: break-word;
+					}
+				}
+			}
+		}
+	}
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
@@ -655,4 +704,14 @@ $title-color: $white;
 }
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
-@media only screen and (max-width: ($mobile-landscape-width + 60) - 1) { /* add code here */ }
+@media only screen and (max-width: $mobile-landscape-width - 1) {
+	.table-set {
+		.link-list {
+			> .row {
+				> .columns {
+					font-size: 3.8vw;
+				}
+			}
+		}
+	}
+}
