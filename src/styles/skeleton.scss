@@ -634,6 +634,11 @@ $title-color: $white;
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: $tablet-width - 1) { 
+	.container {
+		.site-title a {
+			font-size: 6vw;
+		}
+	}
 	.content {
 		min-width: 100%;
 		> article,
@@ -690,6 +695,12 @@ $title-color: $white;
 					}
 				}
 			}
+		}
+	}
+	.table-borders {
+		h3 {
+			font-size: 6vw;
+			padding: 2vw 0 0 2vw;
 		}
 	}
 }

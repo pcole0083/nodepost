@@ -86,7 +86,7 @@ export default class Menus extends React.Component {
                 }
 
                 return (
-                    <article>
+                    <article className="category-post-list">
                         <h1>Menus</h1>
                         <p>Edit menus here. On left will be collapsable list of pages, posts, categories, and custom links. On right is menu name / title and links added to the menu.</p>
                         <div className="row table-borders">
