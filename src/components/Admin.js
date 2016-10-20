@@ -101,7 +101,7 @@ export default class Admin extends React.Component {
                             <Link to="/" className="bar-title admin-account-home"><i className="icon-home"></i>Home</Link>
                             <Link to="/" className="bar-title"><i className="icon-gauge"></i>Dashboard</Link>
                             <Link to="/posts" className="bar-title"><i className="icon-newspaper"></i>Posts</Link>
-                            <span className="bar-title"><i className="icon-users"></i>Users</span>
+                            <Link to="/users" className="bar-title"><i className="icon-users"></i>Users</Link>
                             <Link to="/settings" className="bar-title"><i className="icon-database"></i>Settings</Link>
                             <Link to="/menus" className="bar-title"><i className="icon-list"></i>Menu Editor</Link>
                         </div>

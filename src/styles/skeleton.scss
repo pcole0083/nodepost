@@ -422,6 +422,11 @@ $top-menu-color: rgba(240,245,250,1);
 		~ .row {
 			pointer-events: none;
 		}
+
+		&:nth-last-child(2){
+			max-height: 58vh;
+			overflow-y: auto; 
+		}
 	}
 
 	.row-padding {
