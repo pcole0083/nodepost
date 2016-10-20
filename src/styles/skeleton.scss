@@ -380,6 +380,18 @@ $top-menu-color: rgba(240,245,250,1);
 			~ .row {
 				pointer-events: auto;
 			}
+
+			&:nth-last-child(2){
+				max-height: 58vh;
+				overflow-y: auto;
+
+				&::-webkit-scrollbar {
+					background-color: rgba(0,0,0,0);
+				}
+				&::-webkit-scrollbar-thumb {
+					background-color: rgba(255,255,255,0.2);
+				}
+			}
 		}
 
 		.admin-account-link,

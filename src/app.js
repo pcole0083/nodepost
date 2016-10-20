@@ -11,6 +11,7 @@ import Home from './components/Home';
 import Account from './components/Account';
 import Menus from './components/Menus';
 import Settings from './components/Settings';
+import Users from './components/Users';
 
 const {Route} = Router; //gets the Route property from Router
 
@@ -25,6 +26,7 @@ var routes = <Route handler={App}>
 	<Route name='account' path='/account' handler={Account} />
 	<Route name='menus' path='/menus' handler={Menus} />
 	<Route name='settings' path='/settings' handler={Settings} />
+	<Route name='users' path='/users' handler={Users} />
 </Route>;
 
 Router.run(routes, Router.HistoryLocation, Root =>
