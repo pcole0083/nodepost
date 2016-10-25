@@ -74,7 +74,7 @@ export default class Users extends React.Component {
                             <div className="three columns">{user.username}</div>
                             <div className="three columns">{groups.join(', ')}</div>
                             <div className="three columns">{""+!!~groups.indexOf('admins')}</div>
-                            <div className="three columns"><i className="icon-cancel-squared"></i></div>
+                            <div className="three columns"><button className="btn"><span>Delete </span><i className="icon-cancel-squared"></i></button></div>
                         </div>
                     </li>;
                 });
@@ -88,19 +88,18 @@ export default class Users extends React.Component {
                 </li>;
                 all_users.unshift(heading);
 
-
                 let all_groups = Object.keys(this.state.all_groups).map((index) => {
                     let group = this.state.all_groups[index];
                     let keyRef = "group-"+index;
                     let value = ""+group;
                     let disabled = value === 'admins' ? 'disabled' : '';
                     let btn = disabled === 'disabled' ? <button className="btn"><span>Locked </span><i className="icon-lock"></i></button> : <button className="btn" onClick={this.updateGroup} data-fieldref={keyRef} ><span>Update </span><i className="icon-check"></i></button>;
-                    let del = disabled === 'disabled' ? ' ' : <i className="icon-cancel-squared"></i>;
+                    let del = disabled === 'disabled' ? ' ' : <button className="btn"><span>Delete </span><i className="icon-cancel-squared"></i></button> ;
                     
                     return <li key={keyRef} className="group-row">
                         <div className="row">
                             <div className="three columns">
-                                <input type="text" ref={keyRef} data-index={index} defaultValue={value} disabled={disabled} />
+                                <input type="text" ref={keyRef} data-index={index} defaultValue={value} data-saved={value} disabled={disabled} />
                             </div>
                             <div className="three columns">{btn}</div>
                             <div className="three columns">&nbsp;</div>
@@ -108,6 +107,19 @@ export default class Users extends React.Component {
                         </div>
                     </li>;
                 });
+
+                let add_group = <li key="addGroupRow" className="group-row">
+                    <div className="row">
+                        <div className="three columns">
+                            <input type="text" ref="newGroup" data-index="-1" defaultValue="" />
+                        </div>
+                        <div className="three columns">
+                            <button className="btn" onClick={this.addGroup} data-fieldref="newGroup"><span>Add Group </span><i className="icon-plus-squared"></i></button>
+                        </div>
+                    </div>
+                </li>;
+
+                all_groups.push(add_group);
 
                 return <article className="post-article admin-settings">
                     <h1>Site Users</h1>
@@ -133,17 +145,9 @@ export default class Users extends React.Component {
             //API.settings.off('value');
             API.users.once('value', ss => {
                 let json = ss.exportVal() || {};
-                    // userKeys = Object.keys(json),
-                    // users = userKeys.map((id) => {
-                    //     return json[id];
-                    // });
 
                 API.groups.once('value', sg => {
                     let gson = sg.exportVal() || {};
-                        // gKeys = Object.keys(gson),
-                        // all_groups = gKeys.map((id) => {
-                        //     return gson[id];
-                        // });
 
                     this.setState({
                         all_users: json,
@@ -157,20 +161,66 @@ export default class Users extends React.Component {
     }
 
     updateGroup = evt => {
-        var ele = evt.target;
+        let ele = evt.target;
 
         if(ele.nodeName.toLowerCase() !== 'button'){
             ele = evt.target.parentNode;
         }
 
-        var keyRef = ele.getAttribute('data-fieldref'),
+        let all_users = this.state.all_users,
+            keyRef = ele.getAttribute('data-fieldref'),
             input  = ReactDOM.findDOMNode(this.refs[keyRef]),
             value  = input.value,
+            saved  = input.getAttribute('data-saved'),
             index  = input.getAttribute('data-index');
 
-        if(!!index && !!value) {
+        if(!!index && !!value && saved !== 'admins') {
             API.groups.child(index).set(value);
+            Object.keys(all_users).map((i) => {
+                let user = all_users[i];
+                let userInGroup = Object.keys(user.groups).map((ugid) => {
+                    let ugroup = user.groups[ugid];
+                    if(ugroup === saved){
+                        return ugroup;
+                    }
+                });
+
+                if(!!userInGroup[0]){
+                    API.users.child(i+'/groups/'+index).set(value);
+                }
+            });
             this.updateState();
+        }
+    }
+
+    addGroup = evt => {
+        let ele = evt.target;
+
+        if(ele.nodeName.toLowerCase() !== 'button'){
+            ele = evt.target.parentNode;
+        }
+
+        let groups = this.state.all_groups,
+            keyRef = ele.getAttribute('data-fieldref'),
+            input  = ReactDOM.findDOMNode(this.refs[keyRef]),
+            value  = input.value;
+
+        let groupExists = Object.keys(groups).filter((key) => {
+            let groupName = groups[key];
+            if(groupName === value){
+                return key;
+            }
+        })[0];
+
+        if(!!groupExists){
+            return;
+        }
+
+        if(!groupExists){
+            API.groups.push(value, () => {
+                this.updateState();
+                input.value = "";
+            });
         }
     }
 
@@ -180,16 +230,6 @@ export default class Users extends React.Component {
             updatedVal = ele.value;
         console.log(ele);
     }
-
-    // renderOptions(setting) {
-    //     if(!setting || setting.type !== 'select-one'){
-    //         return null;
-    //     }
-
-    //     return setting.value.map((val, id) =>
-    //         <option key={id} value={setting.value[id].value} >{setting.value[id].label}</option>
-    //     );
-    // };
 };
 
 Users.contextTypes = {

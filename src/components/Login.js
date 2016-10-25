@@ -110,10 +110,12 @@ export default class Login extends React.Component {
             "in": "authWithPassword"
         };
 
-        API.ref[signMethods[name]]({
+        var signInObj = {
           email    : email,
           password : password
-        },
+        };
+
+        API.ref[signMethods[name]](signInObj,
         function(error, userData) {
           if (error) {
 
@@ -131,23 +133,52 @@ export default class Login extends React.Component {
             let uid = userData.uid;
 
             if(name === 'up'){
-                API.auth.setUser(uid)
-                scope.sign('in', evt);
+                API.ref[signMethods['in']](signInObj, (err, authData) => {
+                    if(err){
+                        scope.setState({
+                            user: scope.user,
+                            message: error.message
+                        });
+
+                        if(!!dEmail.focus){
+                            dEmail.focus();
+                        }
+                    }
+                    else {
+                        let uid = authData.uid;
+                        API.auth.setUser(uid, authData, (newUser) => {
+                            debugger;
+                            if(!!newUser){
+                                scope.setState({
+                                    user: newUser,
+                                    message: null
+                                });
+
+                                AppDispatcher.dispatcher.dispatch({
+                                    actionType: 'status-login',
+                                    isLoggedIn: true
+                                });
+                            }
+                        });
+                    }
+                });
             }
             else if(name === 'in'){
 
-                API.auth.getUser(uid, function(snapshot){
+                API.auth.getUser(uid, (snapshot) => {
                     let user = snapshot.exportVal();
 
-                    scope.setState({
-                        user: user,
-                        message: null
-                    });
+                    if(!!user){
+                        scope.setState({
+                            user: user,
+                            message: null
+                        });
 
-                    AppDispatcher.dispatcher.dispatch({
-                        actionType: 'status-login',
-                        isLoggedIn: true
-                    });
+                        AppDispatcher.dispatcher.dispatch({
+                            actionType: 'status-login',
+                            isLoggedIn: true
+                        });
+                    }
                 });
             }
           }

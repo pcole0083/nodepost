@@ -21,16 +21,20 @@ export const auth = {
 	getUser: function(uid, callback){
 		users.child(uid).once("value", callback);
 	},
-	setUser: function(uid){
-		getUser(uid, function(snapshot){
+	setUser: function(uid, authData, callback){
+		this.getUser(uid, (snapshot) => {
 			var user = snapshot.exportVal();
 			if(!user) {
 	            users.child(uid).set({
 	              provider: authData.provider,
 	              groups: ['users'],
-	              username: getName(authData)
+	              username: this.getName(authData)
 	            });
 	        }
+	        if(!!callback){
+	        	return callback(user);
+	        }
+	        return user;
 		})
 	},
 	getName: function(authData) {
