@@ -6,6 +6,7 @@ import * as API from '../api';
 //import only the Link property (Destructoring)
 import {Link} from 'react-router';
 import isAdmin from '../helpers/isAdmin';
+import {userCheck} from '../helpers/LoginStatus';
 import ListItemWrapper from './ListItemWrapper';
 
 export default class Users extends React.Component {
@@ -67,17 +68,19 @@ export default class Users extends React.Component {
                 let all_users = Object.keys(this.state.all_users).map((index) => {
                     let user = this.state.all_users[index];
                     let groups = Object.keys(user.groups).map((id) => {
-                        return user.groups[id];
+                        return <button className="btn" key={id} data-uid={index} data-gid={id} onClick={this.removeFromGroup}><span>{user.groups[id]} <i className="icon-cancel-squared"></i></span></button>;
                     });
+
                     return <li key={"user-"+index} className="user-row">
                         <div className="row">
                             <div className="three columns">{user.username}</div>
-                            <div className="three columns">{groups.join(', ')}</div>
+                            <div className="three columns">{groups}</div>
                             <div className="three columns">{""+!!~groups.indexOf('admins')}</div>
                             <div className="three columns"><button className="btn"><span>Delete </span><i className="icon-cancel-squared"></i></button></div>
                         </div>
                     </li>;
                 });
+
                 let heading = <li key="userHeadingGroup" className="headingGroup">
                     <div className="row">
                         <div className="three columns">Username</div>
@@ -122,7 +125,7 @@ export default class Users extends React.Component {
                 all_groups.push(add_group);
 
                 return <article className="post-article admin-settings">
-                    <h1>Site Users</h1>
+                    <h2>Site Users</h2>
                     <ul className="settings-group">
                         {all_users}
                     </ul>
@@ -222,6 +225,33 @@ export default class Users extends React.Component {
                 input.value = "";
             });
         }
+    }
+
+    addToGroup = evt => {
+        let ele = evt.target;
+
+        
+    }
+
+    removeFromGroup = evt => {
+        let ele = evt.target;
+
+        if(ele.nodeName.toLowerCase() !== 'button'){
+            ele = evt.target.parentNode;
+        }
+
+        let uid = ele.getAttribute('data-uid'),
+            gid = ele.getAttribute('data-gid'),
+            user = this.state.all_users[uid];
+
+        API.users.child(uid+'/groups/'+gid).remove((err) => {
+            if(err){
+                return console.table(err);
+            }
+            else {
+                this.updateState();
+            }
+        });
     }
 
     updateUsers = evt => {
