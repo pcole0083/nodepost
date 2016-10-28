@@ -102,6 +102,9 @@ select {
 .f-right {
 	float: right;
 }
+.input-group {
+	display: inline-block;
+}
 
 button,
 .button {
@@ -646,6 +649,9 @@ $title-color: $white;
 
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: $tablet-width - 1) { 
+	.hidden-mobile {
+		display: none;
+	}
 	.container {
 		.site-title a {
 			font-size: 6vw;
@@ -713,6 +719,37 @@ $title-color: $white;
 		h3 {
 			font-size: 6vw;
 			padding: 2vw 0 0 2vw;
+		}
+	}
+	.user-row {
+		.columns{
+		    border: 1px solid $button-color;
+		    border-bottom-width: 0;
+    		padding: 1.2rem 4px 2px;
+
+    		&:first-child {
+    			padding-top: 2px;
+    		}
+
+    		&:last-child {
+    			border-bottom-width: 1px;
+    		}
+
+			&:before {
+				content: attr(title) ":";
+				position: relative;
+				display: inline-block;
+				padding-right: 8px;
+				min-width: 90px;
+				font-weight: 600;
+			}
+		}
+	}
+	.group-row {
+		border: 1px solid $button-color;
+
+		> .row {
+			margin-bottom: 0;
 		}
 	}
 }

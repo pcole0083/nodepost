@@ -7,7 +7,7 @@ import * as API from '../api';
 import {Link} from 'react-router';
 import isAdmin from '../helpers/isAdmin';
 import {userCheck} from '../helpers/LoginStatus';
-import ListItemWrapper from './ListItemWrapper';
+import SelectBox from './SelectBox';
 
 export default class Users extends React.Component {
     state = {
@@ -28,21 +28,6 @@ export default class Users extends React.Component {
             this.cleanup()
         }
     }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     if(JSON.stringify(this.state.settings) === JSON.stringify(nextState.settings)){
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if(!!nextProps.user && (this.props.user.username !== nextProps.user.username) ){
-    //         let groups = nextProps.user.groups || {};
-
-    //         this.updateState(nextProps.user, groups);
-    //     }
-    // }
 
     componentWillUpdate(){
         let user = this.state.user;
@@ -65,34 +50,54 @@ export default class Users extends React.Component {
             }
 
             if(canViewPage) {
+
+                let all_groups = this.state.all_groups;
                 let all_users = Object.keys(this.state.all_users).map((index) => {
                     let user = this.state.all_users[index];
-                    let groups = Object.keys(user.groups).map((id) => {
-                        return <button className="btn" key={id} data-uid={index} data-gid={id} onClick={this.removeFromGroup}><span>{user.groups[id]} <i className="icon-cancel-squared"></i></span></button>;
+                    let current_groups = Object.keys(user.groups).map((id) => {
+                        return <button className="btn" key={id} data-uid={index} data-gid={id} onClick={this.removeUserFromGroup}><span>{user.groups[id]} </span><i className="icon-cancel-squared"></i></button>;
                     });
+
+                    let options = Object.keys(all_groups).map((group_id) => {
+                        return {
+                            value: group_id,
+                            label: all_groups[group_id]
+                        };
+                    });
+
+                    let data = {
+                        id: 'selectUser-'+index,
+                        placeholder: null,
+                        options: options
+                    };
+
+                    let delete_user_btn = isAdmin(user.groups) ? null : <div className="three columns" title="Delete User"><button className="btn"><span>Delete </span><i className="icon-cancel-squared"></i></button></div>;
 
                     return <li key={"user-"+index} className="user-row">
                         <div className="row">
-                            <div className="three columns">{user.username}</div>
-                            <div className="three columns">{groups}</div>
-                            <div className="three columns">{""+!!~groups.indexOf('admins')}</div>
-                            <div className="three columns"><button className="btn"><span>Delete </span><i className="icon-cancel-squared"></i></button></div>
+                            <div className="three columns" title="Username">{user.username}</div>
+                            <div className="three columns" title="Groups">{current_groups}</div>
+                            <div className="three columns" title="Add Group">
+                                <SelectBox data={data} />
+                                <button className="btn" onClick={this.addUserToGroup} data-fieldref={'selectUser-'+index}><i className="icon-plus-squared"></i></button>
+                            </div>
+                            {delete_user_btn}
                         </div>
                     </li>;
                 });
 
-                let heading = <li key="userHeadingGroup" className="headingGroup">
+                let heading = <li key="userHeadingGroup" className="headingGroup hidden-mobile">
                     <div className="row">
                         <div className="three columns">Username</div>
                         <div className="three columns">Groups</div>
-                        <div className="three columns">Is Admin</div>
-                        <div className="three columns">Manage</div>
+                        <div className="three columns">Add to Group</div>
+                        <div className="three columns">Delete</div>
                     </div>
                 </li>;
                 all_users.unshift(heading);
 
-                let all_groups = Object.keys(this.state.all_groups).map((index) => {
-                    let group = this.state.all_groups[index];
+                let all_groups_jsx = Object.keys(all_groups).map((index) => {
+                    let group = all_groups[index];
                     let keyRef = "group-"+index;
                     let value = ""+group;
                     let disabled = value === 'admins' ? 'disabled' : '';
@@ -101,11 +106,10 @@ export default class Users extends React.Component {
                     
                     return <li key={keyRef} className="group-row">
                         <div className="row">
-                            <div className="three columns">
+                            <div className="nine columns">
                                 <input type="text" ref={keyRef} data-index={index} defaultValue={value} data-saved={value} disabled={disabled} />
+                                {btn}
                             </div>
-                            <div className="three columns">{btn}</div>
-                            <div className="three columns">&nbsp;</div>
                             <div className="three columns">{del}</div>
                         </div>
                     </li>;
@@ -113,16 +117,14 @@ export default class Users extends React.Component {
 
                 let add_group = <li key="addGroupRow" className="group-row">
                     <div className="row">
-                        <div className="three columns">
+                        <div className="tweleve columns">
                             <input type="text" ref="newGroup" data-index="-1" defaultValue="" />
-                        </div>
-                        <div className="three columns">
-                            <button className="btn" onClick={this.addGroup} data-fieldref="newGroup"><span>Add Group </span><i className="icon-plus-squared"></i></button>
+                            <button className="btn" onClick={this.addGroup} data-fieldref="newGroup"><span>Add <span className="hidden-mobile">Group</span> </span><i className="icon-plus-squared"></i></button>
                         </div>
                     </div>
                 </li>;
 
-                all_groups.push(add_group);
+                all_groups_jsx.push(add_group);
 
                 return <article className="post-article admin-settings">
                     <h2>Site Users</h2>
@@ -132,7 +134,7 @@ export default class Users extends React.Component {
                     <hr />
                     <h2>User Groups</h2>
                     <ul className="settings-group">
-                        {all_groups}
+                        {all_groups_jsx}
                     </ul>
                 </article>;
             }
@@ -227,13 +229,31 @@ export default class Users extends React.Component {
         }
     }
 
-    addToGroup = evt => {
+    addUserToGroup = evt => {
         let ele = evt.target;
 
-        
+        if(ele.nodeName.toLowerCase() !== 'button'){
+            ele = evt.target.parentNode;
+        }
+
+        let selectid = ele.getAttribute('data-fieldref'),
+            select = !!selectid ? document.querySelector('#'+selectid): null,
+            gid = select.value,
+            groupName = this.state.all_groups[gid];
+
+        let userid = selectid.replace('selectUser-', ''),
+            selectedUser = this.state.all_users[userid];
+
+        if(!!selectedUser.groups[gid]){
+            return; //do nothing if the user already belongs to the group
+        }
+
+        API.users.child(userid+'/groups/'+gid).set(groupName, () => {
+            this.updateState();
+        });
     }
 
-    removeFromGroup = evt => {
+    removeUserFromGroup = evt => {
         let ele = evt.target;
 
         if(ele.nodeName.toLowerCase() !== 'button'){
@@ -244,6 +264,10 @@ export default class Users extends React.Component {
             gid = ele.getAttribute('data-gid'),
             user = this.state.all_users[uid];
 
+        if(uid === this.state.user.uid && user.groups[gid] === "admins"){
+            return;
+        }
+
         API.users.child(uid+'/groups/'+gid).remove((err) => {
             if(err){
                 return console.table(err);
@@ -252,13 +276,6 @@ export default class Users extends React.Component {
                 this.updateState();
             }
         });
-    }
-
-    updateUsers = evt => {
-        var ele = evt.target;
-        var updatedSetting = ele.name,
-            updatedVal = ele.value;
-        console.log(ele);
     }
 };
 
